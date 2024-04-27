@@ -6,7 +6,7 @@ export default function Home() {
       <Head>
         <title>Polyglot</title>
       </Head>
-      <div>first commit</div>
+      <div>マージの練習</div>
     </>
   )
 }
