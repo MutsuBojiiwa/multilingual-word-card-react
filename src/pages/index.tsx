@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { Login } from './login'
 
 export default function Home() {
   return (
@@ -6,7 +7,7 @@ export default function Home() {
       <Head>
         <title>Polyglot</title>
       </Head>
-      <div>マージの練習</div>
+      <Login />
     </>
   )
 }
