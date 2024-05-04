@@ -7,6 +7,14 @@ const Login = () => {
     alert(JSON.stringify(d))
   }
 
+  const handleGuestLoginClicked = () => {
+    alert("ゲストログインクリック")
+  }
+
+  const handleSignInClicked = () => {
+    alert("新規登録クリック")
+  }
+
   return (
 <>
   <div className="flex h-screen flex-col items-center justify-center bg-base">
@@ -24,8 +32,9 @@ const Login = () => {
         <button type="submit" className="rounded-md bg-primary px-4 py-2 text-white">ログイン</button>
       </form>
       <div className="mt-12 flex flex-col">
-        <button className="rounded-md bg-secondary px-4 py-2 text-gray-800">ゲストログイン</button>
-        <a className="mt-6 text-center">新規登録</a>
+        <button onClick={handleGuestLoginClicked}
+         className="rounded-md bg-secondary px-4 py-2 text-gray-800">ゲストログイン</button>
+        <button onClick={handleSignInClicked} className="mx-auto mt-6 w-20 text-center">新規登録</button>
       </div>
     </div>
   </div>
