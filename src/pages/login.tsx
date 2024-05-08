@@ -1,3 +1,5 @@
+import axios from "axios"
+
 import { useForm } from "react-hook-form"
 
 const Login = () => {
@@ -8,7 +10,9 @@ const Login = () => {
   }
 
   const handleGuestLoginClicked = () => {
-    alert("ゲストログインクリック")
+    axios.get('http://api.laravel-v10-starter.localhost/api/login').then((res) => {
+      console.log(res.data);
+    })
   }
 
   const handleSignInClicked = () => {
