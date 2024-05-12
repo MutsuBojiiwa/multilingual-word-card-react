@@ -5,25 +5,33 @@ import { useForm } from "react-hook-form"
 const Login = () => {
   const { register, handleSubmit } = useForm()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let token = ""
+
   const http = axios.create({
-    baseURL: 'http://api.laravel-v10-starter.localhost',
-    withCredentials: true,
+    baseURL: 'http://api.laravel-v10-starter.localhost/api/',
   });
 
   const handleFormSubmit = () => {
     const email = 'user2@example.com'
     const password = 'password'
-    http.get('/sanctum/csrf-cookie').then(() => {
-      http.post('/api/login', { email, password }).then((res) => {
+      http.post('login', { email, password }).then((res) => {
+        console.log("ログインOK");
         console.log(res);
+        token = res.data.authorization.token
       })
-    })
   }
 
   const handleGuestLoginClicked = () => {
-    http.get('/api/users').then((res) => {
+    http.get('users', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
       console.log(res.data);
-    })
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   const handleSignInClicked = () => {
