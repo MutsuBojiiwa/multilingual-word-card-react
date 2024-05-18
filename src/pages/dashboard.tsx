@@ -11,7 +11,9 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
+    const user = JSON.parse(sessionStorage.getItem('user'))
+    console.log(user.email)
     if (token) {
       http.get('users', {
         headers: {

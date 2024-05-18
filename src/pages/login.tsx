@@ -36,7 +36,7 @@ const Login = () => {
       password: values.password,
     })
       .then((res) => {
-        localStorage.setItem('token', res.data.authorization.token)
+        sessionStorage.setItem('token', res.data.authorization.token)
         router.push('/dashboard')
       })
       .catch((e) => {
@@ -50,7 +50,8 @@ const Login = () => {
       password: "password",
     })
       .then((res) => {
-        localStorage.setItem('token', res.data.authorization.token)
+        sessionStorage.setItem('token', res.data.authorization.token)
+        sessionStorage.setItem('user', JSON.stringify(res.data.user))
         router.push('/dashboard')
       })
       .catch((e) => {
