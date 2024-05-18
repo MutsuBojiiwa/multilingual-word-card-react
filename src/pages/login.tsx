@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import { useRouter } from 'next/router'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'react-toastify'
 
 interface FormValues {
   email: string
@@ -39,11 +38,9 @@ const Login = () => {
       .then((res) => {
         localStorage.setItem('token', res.data.authorization.token)
         router.push('/dashboard')
-        toast.success('ログインしました')
       })
       .catch((e) => {
         console.error(e)
-        toast.error('ログインに失敗しました', e)
       })
   }
 
@@ -55,11 +52,9 @@ const Login = () => {
       .then((res) => {
         localStorage.setItem('token', res.data.authorization.token)
         router.push('/dashboard')
-        toast.success('ゲストユーザーでログインしました')
       })
       .catch((e) => {
         console.error(e)
-        toast.error('ゲストユーザーのログインに失敗しました', e)
       })
   }
 
