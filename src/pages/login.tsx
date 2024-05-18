@@ -1,9 +1,11 @@
 import axios from "axios"
 
 import { useForm } from "react-hook-form"
+import { useRouter } from 'next/router';
 
 const Login = () => {
   const { register, handleSubmit } = useForm()
+  const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let token = ""
@@ -19,6 +21,8 @@ const Login = () => {
         console.log("ログインOK");
         console.log(res);
         token = res.data.authorization.token
+        localStorage.setItem('token', token);
+        router.push('/dashboard');
       })
   }
 
