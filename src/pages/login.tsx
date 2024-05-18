@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { useRouter } from 'next/router'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Cookies from 'js-cookie'
 
 interface FormValues {
   email: string
@@ -37,6 +38,9 @@ const Login = () => {
     })
       .then((res) => {
         sessionStorage.setItem('token', res.data.authorization.token)
+        sessionStorage.setItem('user', JSON.stringify(res.data.user))
+        Cookies.set('token', res.data.authorization.token)
+        Cookies.set('user', JSON.stringify(res.data.user))
         router.push('/dashboard')
       })
       .catch((e) => {
@@ -52,6 +56,8 @@ const Login = () => {
       .then((res) => {
         sessionStorage.setItem('token', res.data.authorization.token)
         sessionStorage.setItem('user', JSON.stringify(res.data.user))
+        Cookies.set('token', res.data.authorization.token)
+        Cookies.set('user', JSON.stringify(res.data.user))
         router.push('/dashboard')
       })
       .catch((e) => {
