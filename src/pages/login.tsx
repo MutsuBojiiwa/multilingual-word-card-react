@@ -12,8 +12,17 @@ interface FormValues {
 }
 
 const FormSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string(),
+  email: z
+    .string({
+      required_error: 'メールアドレスは必須です'
+    })
+    .max(255, '255字以内です')
+    .email('メールアドレスを入力してください'),
+  password: z
+    .string({
+      required_error: 'パスワードは必須です'
+    })
+    .max(255, '255字以内です')
 })
 
 const Login = () => {
@@ -37,6 +46,9 @@ const Login = () => {
       password: values.password,
     })
       .then((res) => {
+        if(res){
+          console.log(res.data)
+        }
         sessionStorage.setItem('token', res.data.authorization.token)
         sessionStorage.setItem('user', JSON.stringify(res.data.user))
         Cookies.set('token', res.data.authorization.token)
@@ -49,20 +61,11 @@ const Login = () => {
   }
 
   const handleGuestLoginClicked = () => {
-    http.post('login', {
+    const values: FormValues = {
       email: "user@example.com",
-      password: "password",
-    })
-      .then((res) => {
-        sessionStorage.setItem('token', res.data.authorization.token)
-        sessionStorage.setItem('user', JSON.stringify(res.data.user))
-        Cookies.set('token', res.data.authorization.token)
-        Cookies.set('user', JSON.stringify(res.data.user))
-        router.push('/dashboard')
-      })
-      .catch((e) => {
-        console.error(e)
-      })
+      password: "password"
+    };
+    onSubmit(values)
   }
 
   const handleSignInClicked = () => {
