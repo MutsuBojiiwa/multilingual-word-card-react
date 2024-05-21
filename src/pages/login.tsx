@@ -46,9 +46,6 @@ const Login = () => {
       password: values.password,
     })
       .then((res) => {
-        if(res){
-          console.log(res.data)
-        }
         sessionStorage.setItem('token', res.data.authorization.token)
         sessionStorage.setItem('user', JSON.stringify(res.data.user))
         Cookies.set('token', res.data.authorization.token)
@@ -56,7 +53,12 @@ const Login = () => {
         router.push('/dashboard')
       })
       .catch((e) => {
-        console.error(e)
+        if (e.response && e.response.status === 401) {
+          alert('ログイン情報が正しくありません。もう一度お試しください。');
+        } else {
+          console.error(e);
+          alert('予期しないエラーが発生しました。後でもう一度お試しください。');
+        }
       })
   }
 
@@ -103,7 +105,7 @@ const Login = () => {
                 placeholder="パスワードを入力..."
                 required
               />
-              {errors.email && <div className="mt-2 text-sm text-error">{errors.email.message}</div>}
+              {errors.password && <div className="mt-2 text-sm text-error">{errors.password.message}</div>}
             </label>
             <button
               type="submit"
