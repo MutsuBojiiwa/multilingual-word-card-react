@@ -88,14 +88,16 @@ const SignIn = () => {
         //     }
         //   })
       })
-    // .catch((e) => {
-    //   if (e.response && e.response.status === 401) {
-    //     alert('ログイン情報が正しくありません。もう一度お試しください。');
-    //   } else {
-    //     console.error(e);
-    //     alert('予期しないエラーが発生しました。後でもう一度お試しください。');
-    //   }
-    // })
+      .catch((e) => {
+        if (e.response && e.response.status === 401) {
+          alert('ログイン情報が正しくありません。もう一度お試しください。');
+        } else if (e.response && e.response.status === 422) {
+          alert(e.response.data.message);
+        } else {
+          console.error(e);
+          alert('予期しないエラーが発生しました。後でもう一度お試しください。');
+        }
+      })
   }
 
   return (
