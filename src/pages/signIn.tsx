@@ -1,7 +1,9 @@
-import { useRouter } from "next/router"
+import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form"
+import axios from "axios"
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Cookies from 'js-cookie'
 
 interface FormValues {
   name: string
@@ -15,24 +17,30 @@ const FormSchema = z.object({
     .string({
       required_error: '名前は必須です'
     })
-    .max(255, '255字以内です'),
+    .max(255, '255字以内で入力してください'),
   email: z
     .string({
       required_error: 'メールアドレスは必須です'
     })
-    .max(255, '255字以内です')
+    .max(255, '255字以内で入力してください')
     .email('メールアドレスを入力してください'),
   password: z
     .string({
       required_error: 'パスワードは必須です'
     })
-    .max(255, '255字以内です'),
+    .max(255, '255字以内で入力してください')
+    .min(8, '8字以上で入力してください'),
   confirmPassword: z
     .string({
       required_error: '確認用パスワードは必須です'
     })
-    .max(255, '255字以内です')
-})
+    .max(255, '255字以内で入力してください')
+    .min(8, '8字以上で入力してください'),
+}).refine(data => data.password === data.confirmPassword, {
+  message: 'パスワードが一致しません',
+  path: ['confirmPassword'], // エラーメッセージを表示するフィールド
+});
+
 
 
 const SignIn = () => {
@@ -48,11 +56,46 @@ const SignIn = () => {
     resolver: zodResolver(FormSchema),
   })
 
+  const http = axios.create({
+    baseURL: 'http://api.laravel-v10-starter.localhost/api/',
+  });
 
-
-  const onSubmit = () => {
-    console.log("submit")
-    router.push('/dashboard')
+  const onSubmit = (values: FormValues) => {
+    http.post('register', {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    })
+      .then((res) => {
+        console.log(res)
+        // http.post('login', {
+        //   email: values.email,
+        //   password: values.password,
+        // })
+        //   .then((res) => {
+        //     sessionStorage.setItem('token', res.data.authorization.token)
+        //     sessionStorage.setItem('user', JSON.stringify(res.data.user))
+        //     Cookies.set('token', res.data.authorization.token)
+        //     Cookies.set('user', JSON.stringify(res.data.user))
+        //     router.push('/dashboard')
+        //   })
+        //   .catch((e) => {
+        //     if (e.response && e.response.status === 401) {
+        //       alert('ログイン情報が正しくありません。もう一度お試しください。');
+        //     } else {
+        //       console.error(e);
+        //       alert('予期しないエラーが発生しました。後でもう一度お試しください。');
+        //     }
+        //   })
+      })
+    // .catch((e) => {
+    //   if (e.response && e.response.status === 401) {
+    //     alert('ログイン情報が正しくありません。もう一度お試しください。');
+    //   } else {
+    //     console.error(e);
+    //     alert('予期しないエラーが発生しました。後でもう一度お試しください。');
+    //   }
+    // })
   }
 
   return (

@@ -1,7 +1,6 @@
-import axios from "axios"
-
-import { useForm } from "react-hook-form"
 import { useRouter } from 'next/router'
+import { useForm } from "react-hook-form"
+import axios from "axios"
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Cookies from 'js-cookie'
@@ -16,13 +15,13 @@ const FormSchema = z.object({
     .string({
       required_error: 'メールアドレスは必須です'
     })
-    .max(255, '255字以内です')
+    .max(255, '255字以内で入力してください')
     .email('メールアドレスを入力してください'),
   password: z
     .string({
       required_error: 'パスワードは必須です'
     })
-    .max(255, '255字以内です')
+    .max(255, '255字以内で入力してください')
 })
 
 const Login = () => {
