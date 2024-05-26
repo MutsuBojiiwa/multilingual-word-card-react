@@ -72,9 +72,7 @@ const Login = () => {
 
   const handleSignInClicked = () => {
     // alert("新規登録クリック")
-    http.get('/api/health').then((res) => {
-      console.log(res);
-    })
+    router.push('/signIn')
   }
 
   return (
