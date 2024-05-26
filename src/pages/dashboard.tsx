@@ -9,8 +9,15 @@ const http = axios.create({
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
-  const [user, setUser] = useState("")
+  const [loginUser, setLoginUser] = useState("")
+  const [token, setToken] = useState("")
   const router = useRouter();
+
+  const clear = () => {
+    setUsers([])
+    setLoginUser("")
+    setToken("")
+  }
 
   useEffect(() => {
     //ここのロジック見直す
@@ -18,6 +25,9 @@ const Dashboard = () => {
     if (!token) {
       token = Cookies.get('token')
     }
+    setToken(token)
+    console.log(token)
+
     let user;
     const userCookie = Cookies.get('user');
     if (userCookie) {
@@ -28,7 +38,7 @@ const Dashboard = () => {
 
     console.log(user)
 
-    setUser(user)
+    setLoginUser(user)
 
 
     if (token) {
@@ -48,16 +58,34 @@ const Dashboard = () => {
     }
   }, [router]);
 
+  const handleLogout = () => {
+    http.post('logout', null, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => {
+        clear()
+        router.push('/login');
+        alert(res.data.message);
+      })
+      .catch((e) => {
+        console.error("ログアウトエラー:", e);
+      });
+
+  }
+
   return (
-    <div>
+    <>
       <h1>ダッシュボード</h1>
-      <h2>{user.name}</h2>
+      <h2>{loginUser.name}</h2>
+      <button onClick={handleLogout}>ログアウト</button>
       <ul>
         {users.map(user => (
           <li key={user.id}>{user.name} ({user.email})</li>
         ))}
       </ul>
-    </div>
+    </>
   );
 };
 
