@@ -88,7 +88,7 @@ const Login = () => {
                 type="email"
                 id="email"
                 className="rounded-md border border-gray-400 p-2 focus:border-red-500"
-                placeholder="example@test.com"
+                placeholder="user@example.com"
                 required
               />
               {errors.email && <div className="mt-2 text-sm text-error">{errors.email.message}</div>}
