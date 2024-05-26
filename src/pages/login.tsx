@@ -1,13 +1,14 @@
-import { useRouter } from 'next/router'
-import { useForm } from "react-hook-form"
-import axios from "axios"
-import z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import Cookies from 'js-cookie'
+import { useRouter } from 'next/router';
+import { useForm } from "react-hook-form";
+import type { AxiosError } from "axios";
+import axios from "axios";
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Cookies from 'js-cookie';
 
 interface FormValues {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 const FormSchema = z.object({
@@ -22,10 +23,38 @@ const FormSchema = z.object({
       required_error: 'パスワードは必須です'
     })
     .max(255, '255字以内で入力してください')
-})
+});
+
+export const handleLogin = async (values: FormValues, router) => {
+  const http = axios.create({
+    baseURL: 'http://api.laravel-v10-starter.localhost/api/',
+  });
+
+  try {
+    const res = await http.post('login', {
+      email: values.email,
+      password: values.password,
+    });
+
+    sessionStorage.setItem('token', res.data.authorization.token);
+    sessionStorage.setItem('user', JSON.stringify(res.data.user));
+    Cookies.set('token', res.data.authorization.token);
+    Cookies.set('user', JSON.stringify(res.data.user));
+    router.push('/dashboard');
+  } catch (e) {
+    const error = e as AxiosError;
+    // eslint-disable-next-line max-depth
+    if (error.response && error.response.status === 401) {
+      alert('ログイン情報が正しくありません。もう一度お試しください。');
+    } else {
+      console.error(e);
+      alert('ログイン処理時に予期しないエラーが発生しました。後でもう一度お試しください。');
+    }
+  }
+};
 
 const Login = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -33,53 +62,27 @@ const Login = () => {
     formState: { errors, isDirty },
   } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
-  })
-
-  const http = axios.create({
-    baseURL: 'http://api.laravel-v10-starter.localhost/api/',
   });
-
-  const onSubmit = (values: FormValues) => {
-    http.post('login', {
-      email: values.email,
-      password: values.password,
-    })
-      .then((res) => {
-        sessionStorage.setItem('token', res.data.authorization.token)
-        sessionStorage.setItem('user', JSON.stringify(res.data.user))
-        Cookies.set('token', res.data.authorization.token)
-        Cookies.set('user', JSON.stringify(res.data.user))
-        router.push('/dashboard')
-      })
-      .catch((e) => {
-        if (e.response && e.response.status === 401) {
-          alert('ログイン情報が正しくありません。もう一度お試しください。');
-        } else {
-          console.error(e);
-          alert('予期しないエラーが発生しました。後でもう一度お試しください。');
-        }
-      })
-  }
 
   const handleGuestLoginClicked = () => {
     const values: FormValues = {
       email: "user@example.com",
       password: "password"
     };
-    onSubmit(values)
-  }
+    handleLogin(values, router);
+  };
 
   const handleSignInClicked = () => {
     // alert("新規登録クリック")
-    router.push('/signIn')
-  }
+    router.push('/signIn');
+  };
 
   return (
     <>
       <div className="flex h-screen flex-col items-center justify-center bg-base">
         <div className="w-96 rounded-lg bg-white p-10 shadow-md">
           <p className="mb-10 text-center text-xl ">ログイン</p>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+          <form onSubmit={handleSubmit(data => handleLogin(data, router))} className="flex flex-col">
             <label className="mb-4 flex flex-col">
               <span className="mb-1">メールアドレス</span>
               <input
@@ -123,9 +126,7 @@ const Login = () => {
         </div>
       </div>
     </>
+  );
+};
 
-
-  )
-}
-
-export default Login
+export default Login;

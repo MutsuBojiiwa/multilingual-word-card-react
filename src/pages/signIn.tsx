@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import axios from "axios"
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Cookies from 'js-cookie'
+import { handleLogin } from './login'
 
 interface FormValues {
   name: string
@@ -45,7 +45,6 @@ const FormSchema = z.object({
 
 const SignIn = () => {
 
-
   const router = useRouter()
 
   const {
@@ -66,37 +65,8 @@ const SignIn = () => {
       email: values.email,
       password: values.password,
     })
-      .then((res) => {
-        console.log(res)
-        // http.post('login', {
-        //   email: values.email,
-        //   password: values.password,
-        // })
-        //   .then((res) => {
-        //     sessionStorage.setItem('token', res.data.authorization.token)
-        //     sessionStorage.setItem('user', JSON.stringify(res.data.user))
-        //     Cookies.set('token', res.data.authorization.token)
-        //     Cookies.set('user', JSON.stringify(res.data.user))
-        //     router.push('/dashboard')
-        //   })
-        //   .catch((e) => {
-        //     if (e.response && e.response.status === 401) {
-        //       alert('ログイン情報が正しくありません。もう一度お試しください。');
-        //     } else {
-        //       console.error(e);
-        //       alert('予期しないエラーが発生しました。後でもう一度お試しください。');
-        //     }
-        //   })
-      })
-      .catch((e) => {
-        if (e.response && e.response.status === 401) {
-          alert('ログイン情報が正しくありません。もう一度お試しください。');
-        } else if (e.response && e.response.status === 422) {
-          alert(e.response.data.message);
-        } else {
-          console.error(e);
-          alert('予期しないエラーが発生しました。後でもう一度お試しください。');
-        }
+      .then(() => {
+        handleLogin(values, router)
       })
   }
 
