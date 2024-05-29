@@ -77,7 +77,12 @@ const SignIn = () => {
       password: values.password,
     })
       .then(() => {
+        console.log("register成功。この後ログイン")
         handleLogin(values, router)
+      })
+      .catch((e)=>{
+        console.log("register失敗")
+        console.log(e)
       })
   }
 
