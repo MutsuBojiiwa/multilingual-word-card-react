@@ -29,6 +29,8 @@ const FormSchema = z.object({
 export const handleLogin = async (values: FormValues, router) => {
   let http;
 
+  console.log(API_URL)
+
   if (API_URL) {
     http = axios.create({
       baseURL: API_URL,
@@ -58,6 +60,7 @@ export const handleLogin = async (values: FormValues, router) => {
       alert('ログイン情報が正しくありません。もう一度お試しください。');
     } else {
       console.error(e);
+      console.log(e);
       alert('ログイン処理時に予期しないエラーが発生しました。後でもう一度お試しください。');
     }
   }

@@ -70,6 +70,7 @@ const SignIn = () => {
   }
 
   const onSubmit = (values: FormValues) => {
+    console.log(values)
     http.post('/register', {
       name: values.name,
       email: values.email,
