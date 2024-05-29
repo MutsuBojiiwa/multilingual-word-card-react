@@ -5,6 +5,7 @@ import axios from "axios";
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Cookies from 'js-cookie';
+import { API_URL } from '@/env';
 
 interface FormValues {
   email: string;
@@ -26,9 +27,18 @@ const FormSchema = z.object({
 });
 
 export const handleLogin = async (values: FormValues, router) => {
-  const http = axios.create({
-    baseURL: 'http://api.laravel-v10-starter.localhost/api/',
-  });
+  let http;
+
+  if (API_URL) {
+    http = axios.create({
+      baseURL: API_URL,
+    });
+  } else {
+    http = axios.create({
+      baseURL: 'http://api.laravel-v10-starter.localhost/api/',
+    });
+  }
+
 
   try {
     const res = await http.post('login', {
