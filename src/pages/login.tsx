@@ -35,13 +35,13 @@ export const handleLogin = async (values: FormValues, router) => {
     });
   } else {
     http = axios.create({
-      baseURL: 'http://api.laravel-v10-starter.localhost/api/',
+      baseURL: 'http://api.laravel-v10-starter.localhost/api',
     });
   }
 
 
   try {
-    const res = await http.post('login', {
+    const res = await http.post('/login', {
       email: values.email,
       password: values.password,
     });

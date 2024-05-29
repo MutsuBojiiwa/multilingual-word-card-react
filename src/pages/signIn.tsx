@@ -65,12 +65,12 @@ const SignIn = () => {
     });
   } else {
     http = axios.create({
-      baseURL: 'http://api.laravel-v10-starter.localhost/api/',
+      baseURL: 'http://api.laravel-v10-starter.localhost/api',
     });
   }
 
   const onSubmit = (values: FormValues) => {
-    http.post('register', {
+    http.post('/register', {
       name: values.name,
       email: values.email,
       password: values.password,
