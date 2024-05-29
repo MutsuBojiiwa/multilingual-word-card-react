@@ -47,6 +47,7 @@ export const handleLogin = async (values: FormValues, router) => {
       email: values.email,
       password: values.password,
     });
+    console.log("ログイン成功")
 
     sessionStorage.setItem('token', res.data.authorization.token);
     sessionStorage.setItem('user', JSON.stringify(res.data.user));
