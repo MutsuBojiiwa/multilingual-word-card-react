@@ -29,19 +29,21 @@ const FormSchema = z.object({
 export const handleLogin = async (values: FormValues, router) => {
   let http;
 
+  console.log(API_URL)
+
   if (API_URL) {
     http = axios.create({
       baseURL: API_URL,
     });
   } else {
     http = axios.create({
-      baseURL: 'http://api.laravel-v10-starter.localhost/api/',
+      baseURL: 'http://api.laravel-v10-starter.localhost/api',
     });
   }
 
 
   try {
-    const res = await http.post('login', {
+    const res = await http.post('/login', {
       email: values.email,
       password: values.password,
     });
@@ -58,6 +60,7 @@ export const handleLogin = async (values: FormValues, router) => {
       alert('ログイン情報が正しくありません。もう一度お試しください。');
     } else {
       console.error(e);
+      console.log(e);
       alert('ログイン処理時に予期しないエラーが発生しました。後でもう一度お試しください。');
     }
   }
