@@ -9,13 +9,13 @@ const http = axios.create({
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
-  const [loginUser, setLoginUser] = useState("")
+  // const [loginUser, setLoginUser] = useState("")
   const [token, setToken] = useState("")
   const router = useRouter();
 
   const clear = () => {
     setUsers([])
-    setLoginUser("")
+    // setLoginUser("")
     setToken("")
   }
 
@@ -38,7 +38,7 @@ const Dashboard = () => {
 
     console.log(user)
 
-    setLoginUser(user)
+    // setLoginUser(user)
 
 
     if (token) {
@@ -78,7 +78,7 @@ const Dashboard = () => {
   return (
     <>
       <h1>ダッシュボード</h1>
-      <h2>{loginUser.name}</h2>
+      {/* <h2>{loginUser.name}</h2> */}
       <button onClick={handleLogout}>ログアウト</button>
       <ul>
         {users.map(user => (
