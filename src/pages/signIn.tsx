@@ -132,6 +132,16 @@ const SignIn = () => {
               登録
             </button>
           </form>
+          <div className="mt-6 flex flex-col">
+            <button
+              onClick={() => {
+                router.back();
+              }}
+              className="mx-auto w-20 text-center"
+            >
+              戻る
+            </button>
+          </div>
         </div>
       </div>
     </>
