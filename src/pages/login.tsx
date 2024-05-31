@@ -27,19 +27,32 @@ const FormSchema = z.object({
 });
 
 export const handleLogin = async (values: FormValues, router) => {
+  console.log(values)
+
   let http;
 
-  console.log(API_URL)
+  console.log(`API_URL = ${API_URL}`)
 
   if (API_URL) {
+  console.log("うえ")
+
     http = axios.create({
       baseURL: API_URL,
     });
   } else {
+  console.log("した")
+
     http = axios.create({
       baseURL: 'http://api.laravel-v10-starter.localhost/api',
     });
   }
+
+  // const http = axios.create({
+  //   baseURL: 'http://api.laravel-v10-starter.localhost/api',
+  // })
+
+  console.log(http)
+
 
 
   try {
@@ -79,10 +92,12 @@ const Login = () => {
   });
 
   const handleGuestLoginClicked = () => {
+    console.log("ゲストログインクリック")
     const values: FormValues = {
       email: "user@example.com",
       password: "password"
     };
+    console.log(values)
     handleLogin(values, router);
   };
 
