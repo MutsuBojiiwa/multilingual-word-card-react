@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form"
-import axios from "axios"
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { handleLogin } from './login'
-import { API_URL } from '@/env'
+import { Api } from '@/api/ApiWrapper'
 
 interface FormValues {
   name: string
@@ -57,21 +56,11 @@ const SignIn = () => {
     resolver: zodResolver(FormSchema),
   })
 
-  let http
 
-  if (API_URL) {
-    http = axios.create({
-      baseURL: API_URL,
-    });
-  } else {
-    http = axios.create({
-      baseURL: 'http://api.laravel-v10-starter.localhost/api',
-    });
-  }
 
   const onSubmit = (values: FormValues) => {
     console.log(values)
-    http.post('/register', {
+    Api.post('/register', {
       name: values.name,
       email: values.email,
       password: values.password,

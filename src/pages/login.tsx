@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router';
 import { useForm } from "react-hook-form";
 import type { AxiosError } from "axios";
-import axios from "axios";
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Cookies from 'js-cookie';
-import { API_URL } from '@/env';
+import { Api } from '@/api/ApiWrapper';
 
 interface FormValues {
   email: string;
@@ -27,57 +26,32 @@ const FormSchema = z.object({
 });
 
 export const handleLogin = async (values: FormValues, router) => {
-  console.log(values)
 
-  let http;
+  Api.post('/login', {
+    email: values.email,
+    password: values.password,
+  })
+    .then((res) => {
 
-  console.log(`API_URL = ${API_URL}`)
+      console.log(res)
 
-  if (API_URL) {
-    console.log("うえ")
+      sessionStorage.setItem('token', res.data.authorization.token);
+      sessionStorage.setItem('user', JSON.stringify(res.data.user));
+      Cookies.set('token', res.data.authorization.token);
+      Cookies.set('user', JSON.stringify(res.data.user));
+      router.push('/dashboard');
+    })
+    .catch((e) => {
+      const error = e as AxiosError;
+      if (error.response && error.response.status === 401) {
+        alert('ログイン情報が正しくありません。もう一度お試しください。');
+      } else {
+        console.error(e);
+        console.log(e);
+        alert('ログイン処理時に予期しないエラーが発生しました。後でもう一度お試しください。');
+      }
+    })
 
-    http = axios.create({
-      baseURL: API_URL,
-    });
-  } else {
-    console.log("した")
-
-    http = axios.create({
-      baseURL: 'http://api.laravel-v10-starter.localhost/api',
-    });
-  }
-
-  // const http = axios.create({
-  //   baseURL: 'http://api.laravel-v10-starter.localhost/api',
-  // })
-
-  console.log(http)
-
-
-
-  try {
-    const res = await http.post('/login', {
-      email: values.email,
-      password: values.password,
-    });
-    console.log("ログイン成功")
-
-    sessionStorage.setItem('token', res.data.authorization.token);
-    sessionStorage.setItem('user', JSON.stringify(res.data.user));
-    Cookies.set('token', res.data.authorization.token);
-    Cookies.set('user', JSON.stringify(res.data.user));
-    router.push('/dashboard');
-  } catch (e) {
-    const error = e as AxiosError;
-    // eslint-disable-next-line max-depth
-    if (error.response && error.response.status === 401) {
-      alert('ログイン情報が正しくありません。もう一度お試しください。');
-    } else {
-      console.error(e);
-      console.log(e);
-      alert('ログイン処理時に予期しないエラーが発生しました。後でもう一度お試しください。');
-    }
-  }
 };
 
 const Login = () => {
