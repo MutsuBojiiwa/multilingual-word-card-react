@@ -26,7 +26,7 @@ const Dashboard = () => {
       token = Cookies.get('token')
     }
     setToken(token)
-    console.log(token)
+    console.log(`トークン = ${token}`)
 
     let user;
     const userCookie = Cookies.get('user');
@@ -42,7 +42,7 @@ const Dashboard = () => {
 
 
     if (token) {
-      http.get('users', {
+      http.get('/users', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -59,7 +59,7 @@ const Dashboard = () => {
   }, [router]);
 
   const handleLogout = () => {
-    http.post('logout', null, {
+    http.post('/logout', null, {
       headers: {
         Authorization: `Bearer ${token}`
       }

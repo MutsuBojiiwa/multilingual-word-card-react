@@ -34,13 +34,13 @@ export const handleLogin = async (values: FormValues, router) => {
   console.log(`API_URL = ${API_URL}`)
 
   if (API_URL) {
-  console.log("うえ")
+    console.log("うえ")
 
     http = axios.create({
       baseURL: API_URL,
     });
   } else {
-  console.log("した")
+    console.log("した")
 
     http = axios.create({
       baseURL: 'http://api.laravel-v10-starter.localhost/api',
