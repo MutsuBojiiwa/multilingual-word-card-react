@@ -1,29 +1,26 @@
-import { Api } from '@/api/ApiWrapper'
-import Link from 'next/link'
+import type { GetServerSideProps } from 'next';
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const cookieToken = context.req.cookies.token
+
+  if (!cookieToken) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+};
 
 export default function Home() {
-
-  const handleClick = () => {
-
-    Api.get('/health')
-    .then((res) => {
-      console.log(res)
-    })
-  }
-
-  return (
-    <>
-      <ul>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        <li>
-          <Link href="/login">Login</Link>
-        </li>
-        <li>
-          <button onClick={handleClick}>かくにん</button>
-        </li>
-      </ul>
-    </>
-  )
+  return null
 }
+

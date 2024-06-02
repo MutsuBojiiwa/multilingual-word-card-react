@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Api } from '@/api/ApiWrapper';
+import Cookies from 'js-cookie';
 
 
 const Dashboard = () => {
@@ -11,6 +12,10 @@ const Dashboard = () => {
   const clear = () => {
     setUsers([])
     // setLoginUser("")
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    Cookies.remove('token');
+    Cookies.remove('user');
   }
 
   useEffect(() => {
@@ -29,7 +34,7 @@ const Dashboard = () => {
       .then((res) => {
         clear()
         router.push('/login');
-        console.log(res);
+        alert(res.data.message);
       })
       .catch((e) => {
         console.log("ログアウトエラー:");
@@ -53,3 +58,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
