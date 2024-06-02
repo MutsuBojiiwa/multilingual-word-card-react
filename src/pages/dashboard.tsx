@@ -14,13 +14,13 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    Api.get('/users')
-      .then((res) => {
-        setUsers(res.data);
-        console.log(res)
-      }).catch((error) => {
-        console.log("ユーザー取得失敗", error);
-      });
+    // Api.get('/users')
+    //   .then((res) => {
+    //     setUsers(res.data);
+    //     console.log(res)
+    //   }).catch((error) => {
+    //     console.log("ユーザー取得失敗", error);
+    //   });
   }, [router]);
 
   const handleLogout = () => {
@@ -32,7 +32,8 @@ const Dashboard = () => {
         console.log(res);
       })
       .catch((e) => {
-        console.error("ログアウトエラー:", e);
+        console.log("ログアウトエラー:");
+        console.log(e);
       });
 
   }

@@ -59,18 +59,20 @@ const SignIn = () => {
 
 
   const onSubmit = (values: FormValues) => {
-    console.log(values)
     Api.post('/register', {
       name: values.name,
       email: values.email,
       password: values.password,
     })
       .then(() => {
-        console.log("register成功。この後ログイン")
         handleLogin(values, router)
       })
-      .catch((e)=>{
-        console.log("register失敗")
+      .catch((e) => {
+        if (e.response.status === 422) {
+          alert(e.response.data.message)
+        }else{
+          alert("ユーザーの登録に失敗しました")
+        }
         console.log(e)
       })
   }

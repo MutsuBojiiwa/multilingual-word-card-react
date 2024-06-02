@@ -32,9 +32,6 @@ export const handleLogin = async (values: FormValues, router) => {
     password: values.password,
   })
     .then((res) => {
-
-      console.log(res)
-
       sessionStorage.setItem('token', res.data.authorization.token);
       sessionStorage.setItem('user', JSON.stringify(res.data.user));
       Cookies.set('token', res.data.authorization.token);
@@ -43,7 +40,7 @@ export const handleLogin = async (values: FormValues, router) => {
     })
     .catch((e) => {
       const error = e as AxiosError;
-      if (error.response && error.response.status === 401) {
+      if (error.response.status === 401) {
         alert('ログイン情報が正しくありません。もう一度お試しください。');
       } else {
         console.error(e);
@@ -66,17 +63,14 @@ const Login = () => {
   });
 
   const handleGuestLoginClicked = () => {
-    console.log("ゲストログインクリック")
     const values: FormValues = {
       email: "user@example.com",
       password: "password"
     };
-    console.log(values)
     handleLogin(values, router);
   };
 
   const handleSignInClicked = () => {
-    // alert("新規登録クリック")
     router.push('/signIn');
   };
 
