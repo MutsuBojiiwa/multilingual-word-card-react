@@ -5,6 +5,7 @@ import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Cookies from 'js-cookie';
 import { Api } from '@/api/ApiWrapper';
+import CustomHead from '@/components/customHead';
 
 interface FormValues {
   email: string;
@@ -76,6 +77,7 @@ const Login = () => {
 
   return (
     <>
+      <CustomHead />
       <div className="flex h-screen flex-col items-center justify-center bg-base">
         <div className="w-96 rounded-lg bg-white p-10 shadow-md">
           <p className="mb-10 text-center text-xl ">ログイン</p>

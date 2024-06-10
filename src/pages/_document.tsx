@@ -1,11 +1,9 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Head, Html, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
     <Html lang="en">
-      <Head>
-        <title>Polyglot</title>
-      </Head>
+      <Head />
       <body className="font-body">
         <Main />
         <NextScript />
