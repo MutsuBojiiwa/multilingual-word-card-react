@@ -28,7 +28,7 @@ const FormSchema = z.object({
 
 export const handleLogin = async (values: FormValues, router) => {
 
-  Api.post('/login', {
+  Api.post('/auth/login', {
     email: values.email,
     password: values.password,
   })

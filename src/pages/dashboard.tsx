@@ -4,15 +4,24 @@ import { Api } from '@/api/ApiWrapper';
 import Cookies from 'js-cookie';
 import CustomHead from '@/components/customHead';
 
+type User = {
+  id: number,
+  name: string,
+}
+
+const initialUser: User = {
+  id: 0,
+  name: ""
+}
 
 const Dashboard = () => {
-  const [users, setUsers] = useState([]);
-  // const [loginUser, setLoginUser] = useState("")
+  const [decks, setDecks] = useState([]);
+  const [loginUser, setLoginUser] = useState(initialUser);
   const router = useRouter();
 
-  const clear = () => {
-    setUsers([])
-    // setLoginUser("")
+  const clearUserData = () => {
+    setDecks([]);
+    setLoginUser(initialUser);
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
     Cookies.remove('token');
@@ -20,33 +29,40 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    // Api.get('/users')
-    //   .then((res) => {
-    //     setUsers(res.data);
-    //     console.log(res)
-    //   }).catch((error) => {
-    //     console.log("ユーザー取得失敗", error);
-    //   });
+    // ユーザーデータの取得と設定
+    const userData = JSON.parse(sessionStorage.getItem('user')) ?? JSON.parse(Cookies.get('user'));
+    const user: User = {
+      id: userData.id,
+      name: userData.name,
+    };
+    setLoginUser(user);
+
+    // デッキのデータ取得
+    Api.get(`/decks/${user.id}`)
+      .then((res) => {
+        console.log(res.data)
+        setDecks(res.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching deck:', error);
+      });
   }, [router]);
 
   const handleLogout = () => {
-    Api.post('/logout', null, {
-    })
+    Api.post('/auth/logout', null)
       .then((res) => {
-        clear()
+        clearUserData();
         router.push('/login');
         alert(res.data.message);
       })
-      .catch((e) => {
-        console.log("ログアウトエラー:");
-        console.log(e);
+      .catch((error) => {
+        console.log("ログアウトエラー:", error);
       });
-
   }
 
   return (
     <>
-    <CustomHead />
+      <CustomHead />
       <nav className="w-full bg-gray-100">
         <div className="mx-auto flex w-main justify-between">
           <div className="">
@@ -67,10 +83,12 @@ const Dashboard = () => {
           </div>
         </div>
       </nav>
-      {/* <h2>{loginUser.name}</h2> */}
+      <p>{loginUser.id}</p>
+      <p>{loginUser.name}</p>
+      {/* <p>{decks}</p> */}
       <ul>
-        {users.map(user => (
-          <li key={user.id}>{user.name} ({user.email})</li>
+        {decks.map(deck => (
+          <li key={deck.id}>{deck.name}</li>
         ))}
       </ul>
     </>
@@ -78,4 +96,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

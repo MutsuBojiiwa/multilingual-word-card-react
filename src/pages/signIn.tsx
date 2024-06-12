@@ -59,7 +59,7 @@ const SignIn = () => {
 
 
   const onSubmit = (values: FormValues) => {
-    Api.post('/register', {
+    Api.post('/auth/register', {
       name: values.name,
       email: values.email,
       password: values.password,
