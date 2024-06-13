@@ -70,7 +70,7 @@ const Dashboard = () => {
         onLogout={handleLogout}
       />
       <div className="flex flex-col items-center">
-        <div className='grid h-96 w-main grid-cols-3 grid-rows-2 gap-8 p-4'>
+        <div className='mt-16 grid h-96 w-main grid-cols-3 grid-rows-2 gap-8 p-4'>
           <div className='col-span-2 grid grid-cols-4 bg-white'>
             <div className='col-span-2 flex items-center'>
               <div className='size-20 border border-black'>アイコン</div>
