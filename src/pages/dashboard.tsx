@@ -66,17 +66,20 @@ const Dashboard = () => {
   return (
     <>
       <CustomHead />
-      <Header 
-      onLogout={handleLogout}
+      <Header
+        onLogout={handleLogout}
       />
       <p>{loginUser.id}</p>
       <p>{loginUser.name}</p>
       {/* <p>{decks}</p> */}
-      <ul>
-        {decks.map(deck => (
-          <li key={deck.id}>{deck.name}</li>
-        ))}
-      </ul>
+      {decks.map(deck => (
+        <div
+          className='border w-40'
+          key={deck.id}>
+          {deck.name}
+        </div>
+      ))}
+
     </>
   );
 };

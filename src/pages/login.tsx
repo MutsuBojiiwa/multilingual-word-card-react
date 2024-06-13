@@ -78,7 +78,7 @@ const Login = () => {
   return (
     <>
       <CustomHead />
-      <div className="flex h-screen flex-col items-center justify-center bg-base">
+      <div className="flex h-screen flex-col items-center justify-center">
         <div className="w-96 rounded-lg bg-white p-10 shadow-md">
           <p className="mb-10 text-center text-xl ">ログイン</p>
           <form onSubmit={handleSubmit(data => handleLogin(data, router))} className="flex flex-col">
