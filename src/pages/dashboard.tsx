@@ -70,10 +70,34 @@ const Dashboard = () => {
         onLogout={handleLogout}
       />
       <div className="flex flex-col items-center">
+        <div className='grid h-96 w-main grid-cols-3 grid-rows-2 gap-8 p-4'>
+          <div className='col-span-2 grid grid-cols-4 bg-white'>
+            <div className='col-span-2 flex items-center'>
+              <div className='size-20 border border-black'>アイコン</div>
+              <p>{loginUser.name}</p>
+            </div>
+            <div className='flex flex-col items-center justify-center'>
+              <p>256</p>
+              <p>総回答カード数</p>
+            </div>
+            <div className='flex flex-col items-center justify-center'>
+              <p>12</p>
+              <p>修了デッキ数</p>
+            </div>
+          </div>
+          <div className='col-span-1 flex bg-white'>
+            <p>連続学習日数</p>
+          </div>
+          <div className='col-span-2 flex bg-white '>
+            <p>前回の続き</p>
+          </div>
+          <div className='col-span-1 flex bg-white '>
+            <p>学習カレンダー</p>
+          </div>
+        </div>
 
-        <p>{loginUser.id}</p>
-        <p>{loginUser.name}</p>
-        <div className='grid w-main grid-cols-4'>
+        <div className='mb-8 mt-16 w-main border-b-4 border-black px-8 py-4 text-4xl'>デッキ</div>
+        <div className='grid w-main grid-cols-4 p-4'>
           {/* <p>{decks}</p> */}
           {decks.map(deck => (
             <div
@@ -96,6 +120,11 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
+        <button
+          className="mb-40 mt-16 w-96 rounded-md bg-secondary px-4 py-2"
+        >
+          デッキ一覧
+          </button>
       </div>
     </>
   );
