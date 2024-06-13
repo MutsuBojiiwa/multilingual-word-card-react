@@ -69,17 +69,34 @@ const Dashboard = () => {
       <Header
         onLogout={handleLogout}
       />
-      <p>{loginUser.id}</p>
-      <p>{loginUser.name}</p>
-      {/* <p>{decks}</p> */}
-      {decks.map(deck => (
-        <div
-          className='border w-40'
-          key={deck.id}>
-          {deck.name}
-        </div>
-      ))}
+      <div className="flex flex-col items-center">
 
+        <p>{loginUser.id}</p>
+        <p>{loginUser.name}</p>
+        <div className='grid w-main grid-cols-4'>
+          {/* <p>{decks}</p> */}
+          {decks.map(deck => (
+            <div
+              className='flex h-96 w-60 flex-col items-center justify-between rounded-md bg-white p-4'
+              key={deck.id}
+            >
+              <p className='mt-4'>{deck.name}</p>
+              <div className='w-full'>
+                <button
+                  className="mb-4 w-full rounded-md bg-primary-light px-4 py-2"
+                >
+                  編集
+                </button>
+                <button
+                  className="w-full rounded-md bg-primary px-4 py-2 text-white"
+                >
+                  テスト
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   );
 };
