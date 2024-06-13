@@ -5,7 +5,7 @@ const Header = (props) => {
   const handleLogout = props.onLogout
   
   return (
-    <nav className="w-full bg-gray-100">
+    <nav className="w-full bg-white">
         <div className="mx-auto flex w-main justify-between">
           <div className="">
             <img src="/polyglot_logo.png" />
