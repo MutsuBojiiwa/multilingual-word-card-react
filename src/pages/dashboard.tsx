@@ -61,8 +61,11 @@ const Dashboard = () => {
       });
   }, [router]);
 
-  const handleDeckEdit = () => {
-    router.push('/decks/edit')
+  const handleDeckEdit = (deckId) => {
+    router.push({
+      pathname: '/decks/edit',
+      query: { deckId }
+    })
   }
 
 
@@ -112,7 +115,7 @@ const Dashboard = () => {
               <div className='w-full'>
                 <button
                   className="mb-4 w-full rounded-md bg-primary-light px-4 py-2"
-                  onClick={handleDeckEdit}
+                  onClick={() => { handleDeckEdit(deck.id) }}
                 >
                   編集
                 </button>
@@ -129,7 +132,7 @@ const Dashboard = () => {
           className="mb-40 mt-16 w-96 rounded-md bg-secondary px-4 py-2"
         >
           デッキ一覧
-          </button>
+        </button>
       </div>
     </>
   );
