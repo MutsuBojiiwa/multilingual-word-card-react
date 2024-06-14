@@ -20,30 +20,13 @@ const Dashboard = () => {
   const [loginUser, setLoginUser] = useState(initialUser);
   const router = useRouter();
 
-  const clearUserData = () => {
-    setDecks([]);
-    setLoginUser(initialUser);
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    Cookies.remove('token');
-    Cookies.remove('user');
-  }
 
-  const handleLogout = () => {
-    Api.post('/auth/logout', null)
-      .then((res) => {
-        clearUserData();
-        router.push('/login');
-        alert(res.data.message);
-      })
-      .catch((error) => {
-        console.log("ログアウトエラー:", error);
-      });
-  }
+
+
 
   useEffect(() => {
     // ユーザーデータの取得と設定
-    const userData = JSON.parse(sessionStorage.getItem('user')) ?? JSON.parse(Cookies.get('user'));
+    const userData = JSON.parse(sessionStorage.getItem('user')) ?? JSON.parse(Cookies.get('user')) ?? initialUser
     const user: User = {
       id: userData.id,
       name: userData.name,
@@ -73,9 +56,7 @@ const Dashboard = () => {
   return (
     <>
       <CustomHead />
-      <Header
-        onLogout={handleLogout}
-      />
+      <Header />
       <div className="flex flex-col items-center">
         <div className='mt-16 grid h-96 w-main grid-cols-3 grid-rows-2 gap-8 p-4'>
           <div className='col-span-2 grid grid-cols-4 bg-white'>

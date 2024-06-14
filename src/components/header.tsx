@@ -1,8 +1,30 @@
+import { Api } from '@/api/ApiWrapper';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 
-const Header = (props) => {
+const Header = () => {
+  const router = useRouter();
 
-  const handleLogout = props.onLogout
+
+  const handleLogout = () => {
+    Api.post('/auth/logout', null)
+      .then((res) => {
+        clearUserData();
+        router.push('/login');
+        alert(res.data.message);
+      })
+      .catch((error) => {
+        console.log("ログアウトエラー:", error);
+      });
+  }
+
+  const clearUserData = () => {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    Cookies.remove('token');
+    Cookies.remove('user');
+  }
   
   return (
     <nav className="w-full bg-white">
