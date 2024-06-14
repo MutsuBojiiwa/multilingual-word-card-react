@@ -23,7 +23,7 @@ const DeckEditPage = () => {
       <Header />
       <div>edit page</div>
       <div>{cards.map(card => (
-        <div key={card.id}>{card.deck_id}</div>
+        <div key={card.id}>{card.word}</div>
       ))}
       </div>
     </>
