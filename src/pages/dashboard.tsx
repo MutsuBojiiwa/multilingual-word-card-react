@@ -61,6 +61,10 @@ const Dashboard = () => {
       });
   }, [router]);
 
+  const handleDeckEdit = () => {
+    router.push('/decks/edit')
+  }
+
 
 
   return (
@@ -96,7 +100,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className='mb-8 mt-16 w-main border-b-4 border-black px-8 py-4 text-4xl'>デッキ</div>
+        <div className='mb-8 mt-16 w-main border-b-4 border-primary-light px-8 py-4 text-4xl'>デッキ</div>
         <div className='grid w-main grid-cols-4 p-4'>
           {/* <p>{decks}</p> */}
           {decks.map(deck => (
@@ -108,6 +112,7 @@ const Dashboard = () => {
               <div className='w-full'>
                 <button
                   className="mb-4 w-full rounded-md bg-primary-light px-4 py-2"
+                  onClick={handleDeckEdit}
                 >
                   編集
                 </button>
