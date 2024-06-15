@@ -44,10 +44,10 @@ const Dashboard = () => {
       });
   }, [router]);
 
-  const handleDeckEdit = (deckId) => {
+  const handleDeckEdit = (deckId, deckName) => {
     router.push({
       pathname: '/decks/edit',
-      query: { deckId }
+      query: { deckId, deckName }
     })
   }
 
@@ -96,7 +96,7 @@ const Dashboard = () => {
               <div className='w-full'>
                 <button
                   className="mb-4 w-full rounded-md bg-primary-light px-4 py-2"
-                  onClick={() => { handleDeckEdit(deck.id) }}
+                  onClick={() => { handleDeckEdit(deck.id, deck.name) }}
                 >
                   編集
                 </button>
