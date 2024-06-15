@@ -85,7 +85,7 @@ const Dashboard = () => {
         </div>
 
         <div className='mb-8 mt-16 w-main border-b-4 border-primary-light px-8 py-4 text-4xl'>デッキ</div>
-        <div className='grid w-main grid-cols-4 p-4'>
+        <div className='mb-40 grid w-main grid-cols-4 p-4'>
           {/* <p>{decks}</p> */}
           {decks.map(deck => (
             <div
@@ -94,7 +94,7 @@ const Dashboard = () => {
             >
               <p className='mt-4'>{deck.name}</p>
               <div className='w-full'>
-                <button
+                {/* <button
                   className="mb-4 w-full rounded-md bg-primary-light px-4 py-2"
                   onClick={() => { handleDeckEdit(deck.id) }}
                 >
@@ -104,16 +104,16 @@ const Dashboard = () => {
                   className="w-full rounded-md bg-primary px-4 py-2 text-white"
                 >
                   テスト
-                </button>
+                </button> */}
               </div>
             </div>
           ))}
         </div>
-        <button
+        {/* <button
           className="mb-40 mt-16 w-96 rounded-md bg-secondary px-4 py-2"
         >
           デッキ一覧
-        </button>
+        </button> */}
       </div>
     </>
   );
