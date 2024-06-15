@@ -44,11 +44,17 @@ const Dashboard = () => {
       });
   }, [router]);
 
-  const handleDeckEdit = (deckId, deckName) => {
+  const handleDeckEdit = (deck) => {
     router.push({
       pathname: '/decks/edit',
-      query: { deckId, deckName }
+      query: {
+        deckId: deck.id as number,
+        deckName: deck.name,
+        isFavorite: deck.is_favorite,
+        isPublic: deck.is_public
+      }
     })
+    console.log(JSON.stringify(deck))
   }
 
 
@@ -96,7 +102,7 @@ const Dashboard = () => {
               <div className='w-full'>
                 <button
                   className="mb-4 w-full rounded-md bg-primary-light px-4 py-2"
-                  onClick={() => { handleDeckEdit(deck.id, deck.name) }}
+                  onClick={() => { handleDeckEdit(deck) }}
                 >
                   編集
                 </button>
