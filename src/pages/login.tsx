@@ -5,6 +5,7 @@ import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Cookies from 'js-cookie';
 import { Api } from '@/api/ApiWrapper';
+import CustomHead from '@/components/customHead';
 
 interface FormValues {
   email: string;
@@ -27,7 +28,7 @@ const FormSchema = z.object({
 
 export const handleLogin = async (values: FormValues, router) => {
 
-  Api.post('/login', {
+  Api.post('/auth/login', {
     email: values.email,
     password: values.password,
   })
@@ -76,7 +77,8 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex h-screen flex-col items-center justify-center bg-base">
+      <CustomHead />
+      <div className="flex h-screen flex-col items-center justify-center">
         <div className="w-96 rounded-lg bg-white p-10 shadow-md">
           <p className="mb-10 text-center text-xl ">ログイン</p>
           <form onSubmit={handleSubmit(data => handleLogin(data, router))} className="flex flex-col">
