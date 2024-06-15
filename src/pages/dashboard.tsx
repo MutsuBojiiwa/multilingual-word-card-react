@@ -44,12 +44,12 @@ const Dashboard = () => {
       });
   }, [router]);
 
-  const handleDeckEdit = (deckId) => {
-    router.push({
-      pathname: '/decks/edit',
-      query: { deckId }
-    })
-  }
+  // const handleDeckEdit = (deckId) => {
+  //   router.push({
+  //     pathname: '/decks/edit',
+  //     query: { deckId }
+  //   })
+  // }
 
 
 
