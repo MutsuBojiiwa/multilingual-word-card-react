@@ -32,7 +32,6 @@ const DeckEditPage = () => {
       isFavorite: isFavorite === "1",
       isPublic: isPublic === "1",
     }
-    console.log(deck)
     setDeck(deck)
 
     Api.get(`/cards/${deck.id}`)
@@ -87,10 +86,14 @@ const DeckEditPage = () => {
             </div>
           </div>
           <div className="w-main bg-red-100">
-            <div>{cards.map(card => (
-              <div key={card.id}>{card.word}</div>
-            ))}
-            </div>
+            <table>
+              <tbody>{cards.map(card => (
+                <tr key={card.id}>{card.details.map(detail => (
+                  <td key={detail.id}>{detail.word}</td>
+                ))}</tr>
+              ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
