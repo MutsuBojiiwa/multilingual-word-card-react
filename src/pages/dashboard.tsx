@@ -48,13 +48,14 @@ const Dashboard = () => {
     router.push({
       pathname: '/decks/edit',
       query: {
-        deckId: deck.id as number,
-        deckName: deck.name,
+        id: deck.id as number,
+        userId: deck.id as number,
+        name: deck.name,
         isFavorite: deck.is_favorite,
         isPublic: deck.is_public
       }
     })
-    console.log(JSON.stringify(deck))
+    console.log(deck)
   }
 
 

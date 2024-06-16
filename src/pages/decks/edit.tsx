@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 
 type Deck = {
   id: number,
+  userId: number,
   name: string,
   isFavorite: boolean,
   isPublic: boolean
@@ -14,6 +15,7 @@ type Deck = {
 const initialDeck: Deck = {
   id: 0,
   name: "",
+  userId: 0,
   isFavorite: false,
   isPublic: false
 }
@@ -26,12 +28,13 @@ const DeckEditPage = () => {
 
 
   useEffect(() => {
-    const { deckId, deckName, isFavorite, isPublic, } = router.query
+    const { id, name,userId, isFavorite, isPublic, } = router.query
     const deck: Deck = {
-      id: Number(deckId),
-      name: String(deckName),
-      isFavorite: isFavorite === "1",
-      isPublic: isPublic === "1",
+      id: Number(id),
+      userId: Number(userId),
+      name: String(name),
+      isFavorite: isFavorite === "true",
+      isPublic: isPublic === "true",
     }
     setDeck(deck)
 
@@ -49,6 +52,18 @@ const DeckEditPage = () => {
       isFavorite: !deck.isFavorite
     }
     setDeck(newDeck);
+    console.log("newDeck")
+    console.log(newDeck)
+
+    Api.put(`/decks/update/${newDeck.id}`,newDeck)
+    .then((res)=>{
+      console.log("put OK")
+      console.log(res)
+    })
+    .catch((e) => {
+      console.log(e)
+    })
+
   };
 
   const handlePublicChange = () => {
