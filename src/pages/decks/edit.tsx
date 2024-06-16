@@ -21,6 +21,7 @@ const initialDeck: Deck = {
 const DeckEditPage = () => {
   const [deck, setDeck] = useState(initialDeck)
   const [cards, setCards] = useState([])
+  const [locales, setLocales] = useState([])
   const router = useRouter();
 
 
@@ -37,7 +38,8 @@ const DeckEditPage = () => {
     Api.get(`/cards/${deck.id}`)
       .then((res) => {
         console.log(res.data)
-        setCards(res.data)
+        setCards(res.data.cards)
+        setLocales(res.data.locales)
       })
   }, [router.query])
 
@@ -87,6 +89,12 @@ const DeckEditPage = () => {
           </div>
           <div className="w-main bg-red-100">
             <table>
+              <thead>
+                <tr>{locales.map(locale => (
+                  <td key={locale.id}>{locale.key}</td>
+                ))}
+                </tr>
+              </thead>
               <tbody>{cards.map(card => (
                 <tr key={card.id}>{card.details.map(detail => (
                   <td key={detail.id}>{detail.word}</td>
