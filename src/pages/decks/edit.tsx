@@ -87,17 +87,19 @@ const DeckEditPage = () => {
               </div>
             </div>
           </div>
-          <div className="w-main bg-red-100">
-            <table>
+          <div className="flex  w-main flex-col items-center">
+            <table className="">
               <thead>
                 <tr>{locales.map(locale => (
-                  <td key={locale.id}>{locale.key}</td>
+                  <th className="border-b border-primary-light p-4"
+                    key={locale.id}>{locale.name}</th>
                 ))}
                 </tr>
               </thead>
               <tbody>{cards.map(card => (
                 <tr key={card.id}>{card.details.map(detail => (
-                  <td key={detail.id}>{detail.word}</td>
+                  <td className="border-b border-primary-light px-10 py-4"
+                    key={detail.id}>{detail.word}</td>
                 ))}</tr>
               ))}
               </tbody>
