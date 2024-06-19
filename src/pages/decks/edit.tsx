@@ -1,8 +1,12 @@
+/* eslint-disable max-lines */
 import { Api } from "@/api/ApiWrapper"
 import CustomHead from "@/components/customHead"
 import Header from "@/components/header"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 type Deck = {
   id: number,
@@ -20,6 +24,18 @@ const initialDeck: Deck = {
   isPublic: false
 }
 
+interface FormValues {
+  word: string
+}
+
+const FormSchema = z.object({
+  word: z
+    .string({
+      required_error: '単語を入力してください'
+    })
+    .max(255, '255字以内で入力してください'),
+})
+
 const DeckEditPage = () => {
   const [deck, setDeck] = useState(initialDeck)
   const [cards, setCards] = useState([])
@@ -28,7 +44,7 @@ const DeckEditPage = () => {
 
 
   useEffect(() => {
-    const { id, name,userId, isFavorite, isPublic, } = router.query
+    const { id, name, userId, isFavorite, isPublic, } = router.query
     const deck: Deck = {
       id: Number(id),
       userId: Number(userId),
@@ -55,14 +71,14 @@ const DeckEditPage = () => {
     console.log("newDeck")
     console.log(newDeck)
 
-    Api.put(`/decks/update/${newDeck.id}`,newDeck)
-    .then((res)=>{
-      console.log("put OK")
-      console.log(res)
-    })
-    .catch((e) => {
-      console.log(e)
-    })
+    Api.put(`/decks/update/${newDeck.id}`, newDeck)
+      .then((res) => {
+        console.log("put OK")
+        console.log(res)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
 
   };
 
@@ -73,6 +89,34 @@ const DeckEditPage = () => {
     }
     setDeck(newDeck);
   };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+  } = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
+  })
+
+  const onSubmit = (values: FormValues) => {
+    console.log(values)
+    // Api.post('/auth/register', {
+    //   name: values.name,
+    //   email: values.email,
+    //   password: values.password,
+    // })
+    //   .then(() => {
+    //     handleLogin(values, router)
+    //   })
+    //   .catch((e) => {
+    //     if (e.response.status === 422) {
+    //       alert(e.response.data.message)
+    //     }else{
+    //       alert("ユーザーの登録に失敗しました")
+    //     }
+    //     console.log(e)
+    //   })
+  }
 
   return (
     <>
@@ -102,23 +146,53 @@ const DeckEditPage = () => {
               </div>
             </div>
           </div>
-          <div className="flex  w-main flex-col items-center">
-            <table className="">
-              <thead>
-                <tr>{locales.map(locale => (
-                  <th className="border-b border-primary-light p-4"
-                    key={locale.id}>{locale.name}</th>
-                ))}
-                </tr>
-              </thead>
-              <tbody>{cards.map(card => (
-                <tr key={card.id}>{card.details.map(detail => (
-                  <td className="border-b border-primary-light px-10 py-4"
-                    key={detail.id}>{detail.word}</td>
-                ))}</tr>
-              ))}
-              </tbody>
-            </table>
+
+          <div className="mb-40 flex w-main flex-col items-center">
+            <form className="flex flex-col items-center"
+            onSubmit={handleSubmit(onSubmit)}>
+              <table className="">
+                <thead>
+                  <tr>
+                    {locales.map(locale => (
+                      <th className="border-b border-primary-light p-4"
+                        key={locale.id}>
+                        {locale.name}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {cards.map(card => (
+                    <tr key={card.id}>
+                      {card.details.map(detail => (
+                        <td className="border-b border-primary-light px-10 py-4"
+                          key={detail.id}>
+                          {detail.word}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                  <tr>
+                    {locales.map(locale => (
+                      <td className="border-b border-primary-light px-10"
+                        key={locale.id}>
+                        <textarea className="p-2"
+                        {...register('word')}
+                          name="" id="word" />
+                          {errors.word && <div className="mt-2 text-sm text-error">{errors.word.message}</div>}
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+              <button
+                type="submit"
+                className="m-8 w-40 rounded-md bg-primary px-4 py-2 text-white"
+                disabled={!isDirty}
+              >
+                登録
+              </button>
+            </form>
           </div>
         </div>
       </div>
