@@ -38,11 +38,20 @@ const FormSchema = z.object({
     .min(1, "少なくとも1つの単語を入力してください"),
 });
 
+function generateDetails(locales, words) {
+  const details = words.map((word, index) => ({
+      locale_id: locales[index].id,
+      word: word.word
+  }));
+
+  return details
+}
+
 const DeckEditPage = () => {
-  const [deck, setDeck] = useState(initialDeck); 
-  const [cards, setCards] = useState([]); 
-  const [locales, setLocales] = useState([]); 
-  const router = useRouter(); 
+  const [deck, setDeck] = useState(initialDeck);
+  const [cards, setCards] = useState([]);
+  const [locales, setLocales] = useState([]);
+  const router = useRouter();
 
   const {
     register,
@@ -57,7 +66,7 @@ const DeckEditPage = () => {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "words",
   });
@@ -113,7 +122,22 @@ const DeckEditPage = () => {
 
   const onSubmit = (values: FormValues) => {
     console.log(values);
-    // ここにAPI呼び出しを追加します
+    const details = generateDetails(locales, values.words)
+    console.log(details);
+
+    const data = {
+      deck_id:deck.id,
+      details
+    }
+
+    Api.post(`/cards/store`, data)
+      .then((res) => {
+        console.log("store OK")
+        console.log(res)
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
