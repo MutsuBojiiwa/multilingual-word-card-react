@@ -40,8 +40,8 @@ const FormSchema = z.object({
 
 function generateDetails(locales, words) {
   const details = words.map((word, index) => ({
-      locale_id: locales[index].id,
-      word: word.word
+    locale_id: locales[index].id,
+    word: word.word
   }));
 
   return details
@@ -126,7 +126,7 @@ const DeckEditPage = () => {
     console.log(details);
 
     const data = {
-      deck_id:deck.id,
+      deck_id: deck.id,
       details
     }
 
@@ -134,10 +134,41 @@ const DeckEditPage = () => {
       .then((res) => {
         console.log("store OK")
         console.log(res)
+        Api.get(`/cards/${deck.id}`).then((res) => {
+          console.log("登録後のGET");
+          console.log(res.data);
+          setCards(res.data.cards);
+          setLocales(res.data.locales);
+
+          reset({
+            words: res.data.locales.map(() => ({ word: "" })),
+          });
+        });
       })
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const handleDelete = (cardId, event) => {
+    event.preventDefault();
+    Api.delete(`/cards/${cardId}`)
+      .then(() => {
+        console.log("削除完了")
+        Api.get(`/cards/${deck.id}`).then((res) => {
+          console.log("登録後のGET");
+          console.log(res.data);
+          setCards(res.data.cards);
+          setLocales(res.data.locales);
+
+          reset({
+            words: res.data.locales.map(() => ({ word: "" })),
+          });
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      })
   };
 
   return (
@@ -192,6 +223,7 @@ const DeckEditPage = () => {
               <table className="">
                 <thead>
                   <tr>
+                    <th className="border-b border-primary-light p-4" />
                     {locales.map((locale) => (
                       <th className="border-b border-primary-light p-4" key={locale.id}>
                         {locale.name}
@@ -202,6 +234,11 @@ const DeckEditPage = () => {
                 <tbody>
                   {cards.map((card) => (
                     <tr key={card.id}>
+                      <td className="border-b border-primary-light px-10 py-4" >
+                        <button type="button" onClick={(event) => handleDelete(card.id, event)}>
+                          <img className="size-6" src="/delete.svg" alt="" />
+                        </button>
+                      </td>
                       {card.details.map((detail) => (
                         <td className="border-b border-primary-light px-10 py-4" key={detail.id}>
                           {detail.word}
@@ -210,6 +247,7 @@ const DeckEditPage = () => {
                     </tr>
                   ))}
                   <tr>
+                    <td className="border-b border-primary-light px-10" />
                     {fields.map((field, index) => (
                       <td className="border-b border-primary-light px-10" key={field.id}>
                         <textarea
