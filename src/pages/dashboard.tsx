@@ -58,7 +58,19 @@ const Dashboard = () => {
     console.log(deck)
   }
 
-
+  const handleCreateDeck = () => {
+    const data = {
+      user_id: loginUser.id,
+    }
+    Api.post(`/decks/store`, data)
+      .then((res) => {
+        console.log(res)
+        console.log('デッキ作成')
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
 
   return (
     <>
@@ -92,6 +104,14 @@ const Dashboard = () => {
         </div>
 
         <div className='mb-8 mt-16 w-main border-b-4 border-primary-light px-8 py-4 text-4xl'>デッキ</div>
+        <div className='mb-12 flex w-60 flex-col items-center rounded-md bg-white p-4'>
+          <p className="mb-4">新しいデッキを作る</p>
+          <div>
+            <button className="w-40 rounded-md bg-primary px-4 py-2 text-white"
+              onClick={() => { handleCreateDeck() }}
+            >作成開始</button>
+          </div>
+        </div>
         <div className='mb-40 grid w-main grid-cols-4 p-4'>
           {/* <p>{decks}</p> */}
           {decks.map(deck => (
