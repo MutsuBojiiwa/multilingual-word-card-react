@@ -66,6 +66,7 @@ const Dashboard = () => {
       .then((res) => {
         console.log(res)
         console.log('デッキ作成')
+        handleDeckEdit(res.data)
       })
       .catch((e) => {
         console.log(e)
