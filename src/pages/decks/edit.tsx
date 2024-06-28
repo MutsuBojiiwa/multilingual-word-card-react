@@ -51,6 +51,7 @@ const DeckEditPage = () => {
   const [deck, setDeck] = useState(initialDeck);
   const [cards, setCards] = useState([]);
   const [locales, setLocales] = useState([]);
+  // const [isEdit, setIsEdit] = useState(false)
   const router = useRouter();
 
   const {
@@ -171,6 +172,31 @@ const DeckEditPage = () => {
       })
   };
 
+  const handleEdit = (cardId, event) => {
+    event.preventDefault()
+    console.log(cardId)
+
+
+
+    // Api.put(`/cards/${cardId}`)
+    //   .then(() => {
+    //     console.log("編集完了")
+    //     Api.get(`/cards/${deck.id}`).then((res) => {
+    //       console.log("編集後のGET");
+    //       console.log(res.data);
+    //       setCards(res.data.cards);
+    //       setLocales(res.data.locales);
+
+    //       reset({
+    //         words: res.data.locales.map(() => ({ word: "" })),
+    //       });
+    //     });
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   })
+  };
+
   return (
     <>
       <CustomHead />
@@ -237,6 +263,9 @@ const DeckEditPage = () => {
                       <td className="border-b border-primary-light px-10 py-4" >
                         <button type="button" onClick={(event) => handleDelete(card.id, event)}>
                           <img className="size-6" src="/delete.svg" alt="" />
+                        </button>
+                        <button type="button" onClick={(event) => handleEdit(card.id, event)}>
+                          <img className="ml-6 size-6" src="/edit.svg" alt="" />
                         </button>
                       </td>
                       {card.details.map((detail) => (
