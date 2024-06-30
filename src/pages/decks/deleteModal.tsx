@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import type { Deck } from './edit';
 import { Api } from '@/api/ApiWrapper';
 
@@ -9,7 +10,7 @@ interface DeleteModalProps {
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose, deck }) => {
-
+  const router = useRouter();
 
   if (!isOpen) return null;
 
@@ -25,6 +26,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose, deck }) => {
     Api.delete(`/decks/${deck.id}`)
       .then((res) => {
         console.log("delete OK");
+        router.push('/dashboard');
         console.log(res);
       })
       .catch((e) => {
