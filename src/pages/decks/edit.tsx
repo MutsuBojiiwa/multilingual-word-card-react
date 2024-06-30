@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import EditModal from './editModal';
 
 type Deck = {
   id: number;
@@ -52,6 +53,10 @@ const DeckEditPage = () => {
   const [cards, setCards] = useState([]);
   const [locales, setLocales] = useState([]);
   // const [isEdit, setIsEdit] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const router = useRouter();
 
   const {
@@ -201,6 +206,9 @@ const DeckEditPage = () => {
     <>
       <CustomHead />
       <Header />
+
+      <EditModal isOpen={isModalOpen} onClose={closeModal} />
+
       <div className="flex flex-col items-center">
         <div className="flex w-main flex-col items-center">
           <div className="my-10 w-96 rounded-md bg-white p-4">
@@ -212,7 +220,9 @@ const DeckEditPage = () => {
               )}
             </button>
             <div className="flex flex-col items-center ">
-              <div className="mb-4 text-4xl">{deck.name}</div>
+              <button onClick={openModal}>
+                <div className="mb-4 text-4xl">{deck.name}</div>
+              </button>
               <div className="flex items-center">
                 <div>
                   <input
