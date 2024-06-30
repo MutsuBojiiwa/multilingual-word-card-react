@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Deck } from './edit';
+import { Api } from '@/api/ApiWrapper';
 
 interface EditModalProps {
   isOpen: boolean;
@@ -41,27 +42,24 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, deck }) => {
   };
 
   const onSubmit = (values: FormValues) => {
-    console.log(values)
-    // Api.post('/auth/register', {
-    //   name: values.name,
-    //   email: values.email,
-    //   password: values.password,
-    // })
-    //   .then(() => {
-    //     handleLogin(values, router)
-    //   })
-    //   .catch((e) => {
-    //     if (e.response.status === 422) {
-    //       alert(e.response.data.message)
-    //     }else{
-    //       alert("ユーザーの登録に失敗しました")
-    //     }
-    //     console.log(e)
-    //   })
+    const newDeck: Deck = {
+      ...deck,
+      name: values.name,
+    };
+    console.log(deck)
+    console.log(newDeck)
+    Api.put(`/decks/update/${newDeck.id}`, newDeck)
+      .then((res) => {
+        console.log("put OK");
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   const handleDelete = () => {
-    
+    console.log(deck)
   }
 
   return (

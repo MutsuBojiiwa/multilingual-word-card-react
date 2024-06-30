@@ -49,7 +49,7 @@ const Dashboard = () => {
       pathname: '/decks/edit',
       query: {
         id: deck.id as number,
-        userId: deck.id as number,
+        userId: deck.user_id as number,
         name: deck.name,
         isFavorite: deck.is_favorite,
         isPublic: deck.is_public
