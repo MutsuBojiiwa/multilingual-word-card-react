@@ -9,7 +9,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import EditModal from './editModal';
 
-type Deck = {
+export type Deck = {
   id: number;
   userId: number;
   name: string;
@@ -207,7 +207,7 @@ const DeckEditPage = () => {
       <CustomHead />
       <Header />
 
-      <EditModal isOpen={isModalOpen} onClose={closeModal} />
+      <EditModal isOpen={isModalOpen} onClose={closeModal} deck={deck}/>
 
       <div className="flex flex-col items-center">
         <div className="flex w-main flex-col items-center">
