@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form"
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Deck } from './edit';
 import { Api } from '@/api/ApiWrapper';
+import DeleteModal from './deleteModal';
 
 interface EditModalProps {
   isOpen: boolean;
@@ -24,6 +25,11 @@ const FormSchema = z.object({
 });
 
 const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, deck }) => {
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
 
   const {
     register,
@@ -58,15 +64,12 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, deck }) => {
       });
   }
 
-  const handleDelete = () => {
-    console.log(deck)
-  }
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800/50"
       onClick={handleOverlayClick}
     >
+      <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} deck={deck}/>
       <div className="relative flex w-full max-w-lg flex-col items-center rounded-lg bg-white p-6 shadow-lg">
         <button
           className="absolute right-2 top-1 text-2xl text-gray-600"
@@ -98,7 +101,7 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, deck }) => {
         </form>
         <button
             className="w-40 rounded bg-error px-4 py-2 text-white"
-            onClick={handleDelete}
+            onClick={openDeleteModal}
           >
             デッキを削除する
           </button>
