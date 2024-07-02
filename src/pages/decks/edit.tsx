@@ -206,8 +206,7 @@ const DeckEditPage = () => {
     <>
       <CustomHead />
       <Header />
-
-      <EditModal isOpen={isModalOpen} onClose={closeModal} deck={deck}/>
+      <EditModal isOpen={isModalOpen} onClose={closeModal} deck={deck} setDeck={setDeck}/>
 
       <div className="flex flex-col items-center">
         <div className="flex w-main flex-col items-center">

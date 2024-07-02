@@ -9,7 +9,8 @@ import DeleteModal from './deleteModal';
 interface EditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  deck: Deck
+  deck: Deck,
+  setDeck: React.Dispatch<React.SetStateAction<Deck>>
 }
 
 interface FormValues {
@@ -24,7 +25,7 @@ const FormSchema = z.object({
     .max(255, '255字以内で入力してください')
 });
 
-const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, deck }) => {
+const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, deck, setDeck }) => {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -52,12 +53,12 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, deck }) => {
       ...deck,
       name: values.name,
     };
-    console.log(deck)
-    console.log(newDeck)
     Api.put(`/decks/update/${newDeck.id}`, newDeck)
       .then((res) => {
         console.log("put OK");
         console.log(res);
+        setDeck(newDeck)
+        onClose()
       })
       .catch((e) => {
         console.log(e);
