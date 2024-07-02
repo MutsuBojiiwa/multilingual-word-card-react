@@ -25,6 +25,15 @@ const initialDeck: Deck = {
   isPublic: false,
 };
 
+const initialLocales = [
+  { id: 1, key: "ja", name: "日本語" },
+  { id: 2, key: "en", name: "English" },
+]
+
+const initialCards = []
+
+
+
 interface FormValues {
   words: { word: string }[];
 }
@@ -36,7 +45,6 @@ const FormSchema = z.object({
         word: z.string().max(255, "255字以内で入力してください"),
       })
     )
-    .min(1, "少なくとも1つの単語を入力してください"),
 });
 
 function generateDetails(locales, words) {
@@ -89,15 +97,22 @@ const DeckEditPage = () => {
     setDeck(deck);
 
     Api.get(`/cards/${deck.id}`).then((res) => {
-      console.log(res.data);
-      setCards(res.data.cards);
-      setLocales(res.data.locales);
+      console.log(res.data)
+
+      if (res.data.locales.length) {
+        setCards(res.data.cards);
+        setLocales(res.data.locales);
+      } else {
+        setLocales(initialLocales)
+      }
 
       reset({
-        words: res.data.locales.map(() => ({ word: "" })),
+        words: res.data.locales.length
+          ? res.data.locales.map(() => ({ word: "" }))
+          : initialLocales.map(() => ({ word: "" })),
       });
     });
-  }, [router.query, reset]);
+  }, [router.query, reset, cards]);
 
   const handleFavoriteChange = () => {
     const newDeck: Deck = {
@@ -162,10 +177,16 @@ const DeckEditPage = () => {
       .then(() => {
         console.log("削除完了")
         Api.get(`/cards/${deck.id}`).then((res) => {
-          console.log("登録後のGET");
+          console.log("削除後のGET");
           console.log(res.data);
-          setCards(res.data.cards);
-          setLocales(res.data.locales);
+
+          if (res.data.locales.length) {
+            setCards(res.data.cards);
+            setLocales(res.data.locales);
+          } else {
+            setCards(initialCards)
+            setLocales(initialLocales)
+          }
 
           reset({
             words: res.data.locales.map(() => ({ word: "" })),
@@ -206,7 +227,7 @@ const DeckEditPage = () => {
     <>
       <CustomHead />
       <Header />
-      <EditModal isOpen={isModalOpen} onClose={closeModal} deck={deck} setDeck={setDeck}/>
+      <EditModal isOpen={isModalOpen} onClose={closeModal} deck={deck} setDeck={setDeck} />
 
       <div className="flex flex-col items-center">
         <div className="flex w-main flex-col items-center">
