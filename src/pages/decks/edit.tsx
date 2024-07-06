@@ -8,6 +8,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import EditModal from './editModal';
+import LocaleSelectModal from "./localeSelectModal";
 
 export type Deck = {
   id: number;
@@ -17,6 +18,12 @@ export type Deck = {
   isPublic: boolean;
 };
 
+export type Locale = {
+  id: number
+  code: string
+  name: string
+};
+
 const initialDeck: Deck = {
   id: 0,
   name: "",
@@ -24,15 +31,6 @@ const initialDeck: Deck = {
   isFavorite: false,
   isPublic: false,
 };
-
-const initialLocales = [
-  { id: 1, key: "ja", name: "日本語" },
-  { id: 2, key: "en", name: "English" },
-]
-
-const initialCards = []
-
-
 
 interface FormValues {
   words: { word: string }[];
@@ -61,10 +59,12 @@ const DeckEditPage = () => {
   const [cards, setCards] = useState([]);
   const [locales, setLocales] = useState([]);
   // const [isEdit, setIsEdit] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isFirst, setIsFirst] = useState(false)
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openEditModal = () => setIsEditModalOpen(true);
+  const closeEditModal = () => setIsEditModalOpen(false);
+
   const router = useRouter();
 
   const {
@@ -97,22 +97,26 @@ const DeckEditPage = () => {
     setDeck(deck);
 
     Api.get(`/cards/${deck.id}`).then((res) => {
-      console.log(res.data)
+      console.log("get")
+      setCards(res.data.cards)
 
-      if (res.data.locales.length) {
-        setCards(res.data.cards);
-        setLocales(res.data.locales);
-      } else {
-        setLocales(initialLocales)
+      if (!locales.length) {
+        // eslint-disable-next-line max-depth
+        if (res.data.locales.length) {
+          setLocales(res.data.locales)
+          reset({
+            words: res.data.locales.map(() => ({ word: "" }))
+          });
+        }else{
+          setIsFirst(true)
+        }
       }
-
       reset({
-        words: res.data.locales.length
-          ? res.data.locales.map(() => ({ word: "" }))
-          : initialLocales.map(() => ({ word: "" })),
+        words: locales.map(() => ({ word: "" }))
       });
+
     });
-  }, [router.query, reset, cards]);
+  }, [router.query, reset, locales]);
 
   const handleFavoriteChange = () => {
     const newDeck: Deck = {
@@ -120,13 +124,10 @@ const DeckEditPage = () => {
       isFavorite: !deck.isFavorite,
     };
     setDeck(newDeck);
-    console.log("newDeck");
-    console.log(newDeck);
 
     Api.put(`/decks/update/${newDeck.id}`, newDeck)
-      .then((res) => {
-        console.log("put OK");
-        console.log(res);
+      .then(() => {
+        console.log("update OK");
       })
       .catch((e) => {
         console.log(e);
@@ -142,7 +143,6 @@ const DeckEditPage = () => {
   };
 
   const onSubmit = (values: FormValues) => {
-    console.log(values);
     const details = generateDetails(locales, values.words)
     console.log(details);
 
@@ -152,12 +152,9 @@ const DeckEditPage = () => {
     }
 
     Api.post(`/cards/store`, data)
-      .then((res) => {
-        console.log("store OK")
-        console.log(res)
+      .then(() => {
+        console.log("create OK")
         Api.get(`/cards/${deck.id}`).then((res) => {
-          console.log("登録後のGET");
-          console.log(res.data);
           setCards(res.data.cards);
           setLocales(res.data.locales);
 
@@ -175,18 +172,12 @@ const DeckEditPage = () => {
     event.preventDefault();
     Api.delete(`/cards/${cardId}`)
       .then(() => {
-        console.log("削除完了")
+        console.log("delete OK")
         Api.get(`/cards/${deck.id}`).then((res) => {
-          console.log("削除後のGET");
-          console.log(res.data);
 
-          if (res.data.locales.length) {
-            setCards(res.data.cards);
-            setLocales(res.data.locales);
-          } else {
-            setCards(initialCards)
-            setLocales(initialLocales)
-          }
+          setCards(res.data.cards);
+          setLocales(res.data.locales);
+
 
           reset({
             words: res.data.locales.map(() => ({ word: "" })),
@@ -202,32 +193,14 @@ const DeckEditPage = () => {
     event.preventDefault()
     console.log(cardId)
 
-
-
-    // Api.put(`/cards/${cardId}`)
-    //   .then(() => {
-    //     console.log("編集完了")
-    //     Api.get(`/cards/${deck.id}`).then((res) => {
-    //       console.log("編集後のGET");
-    //       console.log(res.data);
-    //       setCards(res.data.cards);
-    //       setLocales(res.data.locales);
-
-    //       reset({
-    //         words: res.data.locales.map(() => ({ word: "" })),
-    //       });
-    //     });
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   })
   };
 
   return (
     <>
       <CustomHead />
       <Header />
-      <EditModal isOpen={isModalOpen} onClose={closeModal} deck={deck} setDeck={setDeck} />
+      <EditModal isOpen={isEditModalOpen} onClose={closeEditModal} deck={deck} setDeck={setDeck} />
+      <LocaleSelectModal isOpen={isFirst} onClose={() => setIsFirst(false)} setLocales={setLocales} />
 
       <div className="flex flex-col items-center">
         <div className="flex w-main flex-col items-center">
@@ -240,7 +213,7 @@ const DeckEditPage = () => {
               )}
             </button>
             <div className="flex flex-col items-center ">
-              <button onClick={openModal}>
+              <button onClick={openEditModal}>
                 <div className="mb-4 text-4xl">{deck.name}</div>
               </button>
               <div className="flex items-center">

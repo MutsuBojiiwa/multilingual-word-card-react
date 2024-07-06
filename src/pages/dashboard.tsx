@@ -36,7 +36,6 @@ const Dashboard = () => {
     // デッキのデータ取得
     Api.get(`/decks/${user.id}`)
       .then((res) => {
-        console.log(res.data)
         setDecks(res.data);
       })
       .catch((error) => {
@@ -55,7 +54,6 @@ const Dashboard = () => {
         isPublic: deck.is_public
       }
     })
-    console.log(deck)
   }
 
   const handleCreateDeck = () => {
@@ -64,7 +62,6 @@ const Dashboard = () => {
     }
     Api.post(`/decks/store`, data)
       .then((res) => {
-        console.log(res)
         console.log('デッキ作成')
         handleDeckEdit(res.data)
       })
