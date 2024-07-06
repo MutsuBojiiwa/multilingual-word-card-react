@@ -247,14 +247,14 @@ const DeckEditPage = () => {
             </div>
           </div>
 
-          <div className="mb-40 flex w-main items-center overflow-auto bg-base">
+          <div className="mb-40 flex max-w-main items-center overflow-auto">
             <form className="flex flex-none flex-col" onSubmit={handleSubmit(onSubmit)}>
               <table className="border-separate border-spacing-0">
                 <thead className="sticky top-0">
                   <tr>
-                    <th className="sticky left-0 border-b border-primary-light bg-base p-4" />
+                    <th className="sticky left-0 w-40 border-b border-primary-light bg-base p-4" />
                     {locales.map((locale, index) => (
-                      <th className={`${index === 0 ? "sticky left-40" : ""} w-60 border-b border-primary-light  p-4`} key={locale.id}>
+                      <th className={`${index === 0 ? "sticky left-40" : ""} w-60 border-b border-primary-light bg-base p-4`} key={locale.id}>
                         {locale.name}
                       </th>
                     ))}
@@ -298,7 +298,7 @@ const DeckEditPage = () => {
               </table>
               <button
                 type="submit"
-                className="sticky left-40 m-8 w-40 rounded-md bg-primary px-4 py-2 text-white"
+                className="sticky left-1/2-minus-80 m-8 w-40 rounded-md bg-primary px-4 py-2 text-white"
                 disabled={!isDirty}
               >
                 登録

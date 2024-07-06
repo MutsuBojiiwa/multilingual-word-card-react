@@ -27,7 +27,13 @@ module.exports = {
       // },
       width: {
         'main': '1200px',
-      }
+      },
+      maxWidth: {
+        'main': '1200px',
+      },
+      spacing: {
+        '1/2-minus-80': 'calc(50% - 80px)',
+      },
     },
   },
   plugins: [],
