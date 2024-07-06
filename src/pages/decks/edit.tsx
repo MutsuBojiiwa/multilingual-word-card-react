@@ -247,14 +247,14 @@ const DeckEditPage = () => {
             </div>
           </div>
 
-          <div className="mb-40 flex w-main flex-col items-center">
-            <form className="flex flex-col items-center" onSubmit={handleSubmit(onSubmit)}>
-              <table className="">
-                <thead>
+          <div className="mb-40 flex w-main items-center overflow-auto bg-base">
+            <form className="flex flex-none flex-col" onSubmit={handleSubmit(onSubmit)}>
+              <table className="border-separate border-spacing-0">
+                <thead className="sticky top-0">
                   <tr>
-                    <th className="border-b border-primary-light p-4" />
-                    {locales.map((locale) => (
-                      <th className="border-b border-primary-light p-4" key={locale.id}>
+                    <th className="sticky left-0 border-b border-primary-light bg-base p-4" />
+                    {locales.map((locale, index) => (
+                      <th className={`${index === 0 ? "sticky left-40" : ""} w-60 border-b border-primary-light  p-4`} key={locale.id}>
                         {locale.name}
                       </th>
                     ))}
@@ -263,7 +263,7 @@ const DeckEditPage = () => {
                 <tbody>
                   {cards.map((card) => (
                     <tr key={card.id}>
-                      <td className="border-b border-primary-light px-10 py-4" >
+                      <td className={`sticky left-0  border-b border-primary-light bg-base px-10 py-4`} >
                         <button type="button" onClick={(event) => handleDelete(card.id, event)}>
                           <img className="size-6" src="/delete.svg" alt="" />
                         </button>
@@ -271,17 +271,17 @@ const DeckEditPage = () => {
                           <img className="ml-6 size-6" src="/edit.svg" alt="" />
                         </button>
                       </td>
-                      {card.details.map((detail) => (
-                        <td className="border-b border-primary-light px-10 py-4" key={detail.id}>
+                      {card.details.map((detail, index) => (
+                        <td className={`${index === 0 ? "sticky left-40" : ""} border-b border-primary-light bg-base px-10 py-4`} key={detail.id}>
                           {detail.word}
                         </td>
                       ))}
                     </tr>
                   ))}
                   <tr>
-                    <td className="border-b border-primary-light px-10" />
+                    <td className="sticky left-0 border-b border-primary-light bg-base px-10" />
                     {fields.map((field, index) => (
-                      <td className="border-b border-primary-light px-10" key={field.id}>
+                      <td className={`${index === 0 ? "sticky left-40" : ""} border-b border-primary-light bg-base px-10`} key={field.id}>
                         <textarea
                           className="p-2"
                           {...register(`words.${index}.word` as const, { required: 'This field is required' })}
@@ -298,7 +298,7 @@ const DeckEditPage = () => {
               </table>
               <button
                 type="submit"
-                className="m-8 w-40 rounded-md bg-primary px-4 py-2 text-white"
+                className="sticky left-40 m-8 w-40 rounded-md bg-primary px-4 py-2 text-white"
                 disabled={!isDirty}
               >
                 登録
