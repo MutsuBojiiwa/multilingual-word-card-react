@@ -134,13 +134,13 @@ const DeckEditPage = () => {
       });
   };
 
-  const handlePublicChange = () => {
-    const newDeck: Deck = {
-      ...deck,
-      isPublic: !deck.isPublic,
-    };
-    setDeck(newDeck);
-  };
+  // const handlePublicChange = () => {
+  //   const newDeck: Deck = {
+  //     ...deck,
+  //     isPublic: !deck.isPublic,
+  //   };
+  //   setDeck(newDeck);
+  // };
 
   const onSubmit = (values: FormValues) => {
     const details = generateDetails(locales, values.words)
@@ -214,9 +214,9 @@ const DeckEditPage = () => {
             </button>
             <div className="flex flex-col items-center ">
               <button onClick={openEditModal}>
-                <div className="mb-4 text-4xl">{deck.name}</div>
+                <div className="mb-10 text-4xl">{deck.name}</div>
               </button>
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <div>
                   <input
                     type="radio"
@@ -243,7 +243,7 @@ const DeckEditPage = () => {
                     非公開
                   </label>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
