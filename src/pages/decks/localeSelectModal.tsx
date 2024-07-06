@@ -31,7 +31,7 @@ const LocaleSelectModal: React.FC<LocaleSelectModalProps> = ({ isOpen, onClose, 
   const {
     register,
     handleSubmit,
-    formState: { errors,},
+    formState: { errors, },
   } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -69,28 +69,27 @@ const LocaleSelectModal: React.FC<LocaleSelectModalProps> = ({ isOpen, onClose, 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800/50">
-      <div className="relative flex min-h-96 w-full max-w-lg flex-col items-center justify-center rounded-lg bg-white p-6 shadow-lg">
+      <div className="relative m-20 flex w-full max-w-lg items-center justify-center overflow-auto rounded-lg bg-white p-6 shadow-lg">
+        <form className="flex w-full flex-col items-center" onSubmit={handleSubmit(onSubmit)}>
         <p className="mb-4">10種類まで言語を選択してください</p>
-        <form className="flex flex-col items-center"
-          onSubmit={handleSubmit(onSubmit)}>
-          <table>
-            {localeMaster.map((locale) => {
-              return (
+          <div className="flex max-h-96 w-full justify-center overflow-y-auto">
+            <table>
+              {localeMaster.map((locale) => (
                 <tr key={locale.id}>
                   <td>
-                    <input {...register("localeIds")}
-                      type="checkbox" id={locale.code} value={locale.id} />
+                    <input {...register("localeIds")} type="checkbox" id={locale.code} value={locale.id} />
                     <label className="pl-4" htmlFor={locale.code}>{locale.name}</label>
                   </td>
                 </tr>
-              );
-            })}
-          </table>
+              ))}
+            </table>
+          </div>
           {errors.localeIds && <p className="mt-4 text-error">{errors.localeIds.message}</p>}
           <input type="submit" className="mt-4 w-40 rounded bg-primary px-4 py-2 text-white" value="登録" />
         </form>
       </div>
     </div>
+
   )
 }
 

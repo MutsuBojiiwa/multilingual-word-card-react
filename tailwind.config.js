@@ -21,10 +21,11 @@ module.exports = {
         secondary: '#F2B825',
         error: '#EA4E4E',
       },
-      // height: {
-      //   'header': '4rem',
-      //   'main': 'calc(100vh - 4rem)',
-      // },
+      height: {
+      },
+      maxHeight: {
+      '60%' : '60%'
+      },
       width: {
         'main': '1200px',
       },
