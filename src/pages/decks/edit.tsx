@@ -9,6 +9,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import EditModal from './editModal';
 import LocaleSelectModal from "./localeSelectModal";
+import EditWordModal from "./editWordModal";
 
 export type Deck = {
   id: number;
@@ -58,12 +59,14 @@ const DeckEditPage = () => {
   const [deck, setDeck] = useState(initialDeck);
   const [cards, setCards] = useState([]);
   const [locales, setLocales] = useState([]);
-  // const [isEdit, setIsEdit] = useState(false)
+  const [isEditWordModalOpen, setIsEditWordModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isFirst, setIsFirst] = useState(false)
 
   const openEditModal = () => setIsEditModalOpen(true);
   const closeEditModal = () => setIsEditModalOpen(false);
+  const openEditWordModal = () => setIsEditWordModalOpen(true);
+  const closeEditWordModal = () => setIsEditWordModalOpen(false);
 
   const router = useRouter();
 
@@ -192,6 +195,7 @@ const DeckEditPage = () => {
   const handleEdit = (cardId, event) => {
     event.preventDefault()
     console.log(cardId)
+    openEditWordModal()
 
   };
 
@@ -201,6 +205,7 @@ const DeckEditPage = () => {
       <Header />
       <EditModal isOpen={isEditModalOpen} onClose={closeEditModal} deck={deck} setDeck={setDeck} />
       <LocaleSelectModal isOpen={isFirst} onClose={() => setIsFirst(false)} setLocales={setLocales} />
+      <EditWordModal isOpen={isEditWordModalOpen} onClose={closeEditWordModal} />
 
       <div className="flex flex-col items-center">
         <div className="flex w-main flex-col items-center">
