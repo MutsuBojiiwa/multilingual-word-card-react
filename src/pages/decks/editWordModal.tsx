@@ -71,27 +71,26 @@ const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose, editCard
       className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800/50"
       onClick={handleOverlayClick}
     >
-      <div className="relative flex h-96 w-full max-w-lg flex-col items-center justify-center rounded-lg bg-white p-6 shadow-lg">
+      <div className="relative flex min-h-96 w-full max-w-lg flex-col items-center justify-center rounded-lg bg-white p-6 shadow-lg">
         <button
           className="absolute right-2 top-1 text-2xl text-gray-600"
-          onClick={onClose}
-        >
+          onClick={onClose}>
           &times;
         </button>
-        <p>単語編集</p>
-        <form className='mb-4 flex flex-col items-center'
+        <form className='mb-4 flex h-full flex-col items-center'
           onSubmit={handleSubmit(onSubmit)}>
-          <input
-            {...register('word', { required: 'Word is required' })}
-            type="text"
-            id="word"
-            className='w-full p-2'
-            placeholder="単語を入力..."
-            defaultValue={editCardDetail.word}
-            required
-          />
-          {errors.word && <div className="mt-2 text-sm text-error">{errors.word.message}</div>}
-
+          <div className='mb-10 border-b-2 border-primary-light'>
+            <input
+              {...register('word', { required: 'Word is required' })}
+              type="text"
+              id="word"
+              className=' w-full p-2'
+              placeholder="単語を入力..."
+              defaultValue={editCardDetail.word}
+              required
+            />
+            {errors.word && <div className="mt-2 text-sm text-error">{errors.word.message}</div>}
+          </div>
           <button
             className="w-40 rounded bg-primary px-4 py-2 text-white"
             type="submit"
@@ -101,7 +100,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose, editCard
           </button>
         </form>
         <button
-          className="mt-10 w-40 rounded bg-gray-400 px-4 py-2 text-white"
+          className="mt-5 w-40 rounded bg-gray-400 px-4 py-2 text-white"
           onClick={onClose}
         >
           戻る
