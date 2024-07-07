@@ -20,10 +20,6 @@ const Dashboard = () => {
   const [loginUser, setLoginUser] = useState(initialUser);
   const router = useRouter();
 
-
-
-
-
   useEffect(() => {
     // ユーザーデータの取得と設定
     const userData = JSON.parse(sessionStorage.getItem('user')) ?? JSON.parse(Cookies.get('user')) ?? initialUser
@@ -76,8 +72,8 @@ const Dashboard = () => {
       <Header />
       <div className="flex flex-col items-center">
         <div className='mt-16 grid h-96 w-main grid-cols-3 grid-rows-2 gap-8 p-4'>
-          <div className='col-span-2 grid grid-cols-4 bg-white'>
-            <div className='col-span-2 flex items-center'>
+          <div className='col-span-2 grid grid-cols-4 rounded-md bg-white'>
+            <div className='col-span-2 flex items-center '>
               {/* <div className='size-20 border border-black'>アイコン</div> */}
               <p className='ml-20'>{loginUser.name}</p>
             </div>
@@ -114,7 +110,7 @@ const Dashboard = () => {
           {/* <p>{decks}</p> */}
           {decks.map(deck => (
             <div
-              className='flex h-96 w-60 flex-col items-center justify-between rounded-md bg-white p-4'
+              className='mb-20 flex h-96 w-60 flex-col items-center justify-between rounded-md bg-white p-4'
               key={deck.id}
             >
               <p className='mt-4'>{deck.name}</p>
@@ -125,11 +121,11 @@ const Dashboard = () => {
                 >
                   編集
                 </button>
-                <button
+                {/* <button
                   className="w-full rounded-md bg-primary px-4 py-2 text-white"
                 >
                   テスト
-                </button>
+                </button> */}
               </div>
             </div>
           ))}
