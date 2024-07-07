@@ -3,16 +3,15 @@ import { Api } from '@/api/ApiWrapper';
 import { useForm } from "react-hook-form"
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-interface CardDetail {
-  id: number
-  word: string
-}
+import type { Card, CardDetail } from './edit';
 
 interface EditWordModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  cardDetail: CardDetail;
+  isOpen: boolean
+  onClose: () => void
+  editCard: Card
+  editCardDetail: CardDetail
+  cards: Card[]
+  setCards: React.Dispatch<React.SetStateAction<Card[]>>
 }
 
 interface FormValues {
@@ -26,7 +25,7 @@ const FormSchema = z.object({
     })
 })
 
-const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose, cardDetail }) => {
+const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose, editCard, editCardDetail, cards, setCards }) => {
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -46,16 +45,20 @@ const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose, cardDeta
 
   const onSubmit = (values: FormValues) => {
     const newDetail = {
-      ...cardDetail,
+      ...editCardDetail,
       word: values.word
     }
-    
-    console.log(newDetail)
+    const newCard = {
+      ...editCard,
+      details: editCard.details.map((detail) => detail.id === newDetail.id ? newDetail : detail)
+    }
+    const newCards = cards.map((card) => card.id === newCard.id ? newCard : card)
+
     Api.put(`/cards/details/update/${newDetail.id}`, newDetail)
       .then((res) => {
         console.log("put OK");
         console.log(res);
-        // setDeck(newDeck)
+        setCards(newCards)
         onClose()
       })
       .catch((e) => {
@@ -84,10 +87,10 @@ const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose, cardDeta
             id="word"
             className='w-full p-2'
             placeholder="単語を入力..."
-            defaultValue={cardDetail.word}
+            defaultValue={editCardDetail.word}
             required
           />
-            {errors.word && <div className="mt-2 text-sm text-error">{errors.word.message}</div>}
+          {errors.word && <div className="mt-2 text-sm text-error">{errors.word.message}</div>}
 
           <button
             className="w-40 rounded bg-primary px-4 py-2 text-white"

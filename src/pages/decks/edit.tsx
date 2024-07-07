@@ -19,6 +19,19 @@ export type Deck = {
   isPublic: boolean;
 };
 
+export type Card = {
+  id:number
+  deckId: number
+  details: CardDetail[]
+}
+
+export type CardDetail = {
+  id: number;
+  cardId: number;
+  localeId: number;
+  word: string;
+}
+
 export type Locale = {
   id: number
   code: string
@@ -62,7 +75,8 @@ const DeckEditPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLocaleSelectModalOpen, setIsLocaleSelectModalOpen] = useState(false)
   const [isEditWordModalOpen, setIsEditWordModalOpen] = useState(false)
-  const [cardDetail, setCardDetail] = useState()
+  const [editCard, setEditCard] = useState()
+  const [editCardDetail, setEditCardDetail] = useState()
 
   const openEditModal = () => setIsEditModalOpen(true);
   const closeEditModal = () => setIsEditModalOpen(false);
@@ -195,10 +209,11 @@ const DeckEditPage = () => {
 
   const handleEdit = (cardId, detailId, event) => {
     event.preventDefault()
-    const editCard = cards.find((card) => card.id === cardId)
-    const editCardDetail = editCard.details.find((detail) => detail.id === detailId)
+    const _editCard = cards.find((card) => card.id === cardId)
+    const _editCardDetail = _editCard.details.find((detail) => detail.id === detailId)
 
-    setCardDetail(editCardDetail)
+    setEditCard(_editCard)
+    setEditCardDetail(_editCardDetail)
 
     openEditWordModal()
 
@@ -210,7 +225,7 @@ const DeckEditPage = () => {
       <Header />
       <EditModal isOpen={isEditModalOpen} onClose={closeEditModal} deck={deck} setDeck={setDeck} />
       <LocaleSelectModal isOpen={isLocaleSelectModalOpen} onClose={() => setIsLocaleSelectModalOpen(false)} setLocales={setLocales} />
-      <EditWordModal isOpen={isEditWordModalOpen} onClose={closeEditWordModal} cardDetail={cardDetail} />
+      <EditWordModal isOpen={isEditWordModalOpen} onClose={closeEditWordModal} editCard={editCard} editCardDetail={editCardDetail} cards={cards} setCards={setCards}/>
 
       <div className="flex flex-col items-center">
         <div className="flex w-main flex-col items-center">
