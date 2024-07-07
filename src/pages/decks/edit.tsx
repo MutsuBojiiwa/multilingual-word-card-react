@@ -59,9 +59,10 @@ const DeckEditPage = () => {
   const [deck, setDeck] = useState(initialDeck);
   const [cards, setCards] = useState([]);
   const [locales, setLocales] = useState([]);
-  const [isEditWordModalOpen, setIsEditWordModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isFirst, setIsFirst] = useState(false)
+  const [isLocaleSelectModalOpen, setIsLocaleSelectModalOpen] = useState(false)
+  const [isEditWordModalOpen, setIsEditWordModalOpen] = useState(false)
+  const [cardDetail, setCardDetail] = useState()
 
   const openEditModal = () => setIsEditModalOpen(true);
   const closeEditModal = () => setIsEditModalOpen(false);
@@ -111,7 +112,7 @@ const DeckEditPage = () => {
             words: res.data.locales.map(() => ({ word: "" }))
           });
         }else{
-          setIsFirst(true)
+          setIsLocaleSelectModalOpen(true)
         }
       }
       reset({
@@ -192,9 +193,13 @@ const DeckEditPage = () => {
       })
   };
 
-  const handleEdit = (cardId, event) => {
+  const handleEdit = (cardId, detailId, event) => {
     event.preventDefault()
-    console.log(cardId)
+    const editCard = cards.find((card) => card.id === cardId)
+    const editCardDetail = editCard.details.find((detail) => detail.id === detailId)
+
+    setCardDetail(editCardDetail)
+
     openEditWordModal()
 
   };
@@ -204,8 +209,8 @@ const DeckEditPage = () => {
       <CustomHead />
       <Header />
       <EditModal isOpen={isEditModalOpen} onClose={closeEditModal} deck={deck} setDeck={setDeck} />
-      <LocaleSelectModal isOpen={isFirst} onClose={() => setIsFirst(false)} setLocales={setLocales} />
-      <EditWordModal isOpen={isEditWordModalOpen} onClose={closeEditWordModal} />
+      <LocaleSelectModal isOpen={isLocaleSelectModalOpen} onClose={() => setIsLocaleSelectModalOpen(false)} setLocales={setLocales} />
+      <EditWordModal isOpen={isEditWordModalOpen} onClose={closeEditWordModal} cardDetail={cardDetail} />
 
       <div className="flex flex-col items-center">
         <div className="flex w-main flex-col items-center">
@@ -272,13 +277,10 @@ const DeckEditPage = () => {
                         <button type="button" onClick={(event) => handleDelete(card.id, event)}>
                           <img className="size-6" src="/delete.svg" alt="" />
                         </button>
-                        <button type="button" onClick={(event) => handleEdit(card.id, event)}>
-                          <img className="ml-6 size-6" src="/edit.svg" alt="" />
-                        </button>
                       </td>
                       {card.details.map((detail, index) => (
                         <td className={`${index === 0 ? "sticky left-40" : ""} border-b border-primary-light bg-base px-10 py-4`} key={detail.id}>
-                          {detail.word}
+                          <button onClick={(event) => handleEdit(card.id, detail.id, event)}>{detail.word}</button>
                         </td>
                       ))}
                     </tr>

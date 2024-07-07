@@ -1,13 +1,18 @@
 import React from 'react';
 // import { Api } from '@/api/ApiWrapper';
 
+interface CardDetail {
+  id: number
+  word: string
+}
+
 interface EditWordModalProps {
   isOpen: boolean;
   onClose: () => void;
+  cardDetail: CardDetail;
 }
 
-const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose }) => {
-
+const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose, cardDetail }) => {
   if (!isOpen) return null;
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -16,9 +21,9 @@ const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleDelete = (values) => {
-
-    console.log(values)
+  const handleUpdate = () => {
+    // const card = cards[editCardIndex];
+    // console.log(card);
     // Api.put(`/cards/${card.id}`)
     //   .then((res) => {
     //     console.log("delete OK");
@@ -27,8 +32,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose }) => {
     //   .catch((e) => {
     //     console.log(e);
     //   });
-  }
-
+  };
 
   return (
     <div
@@ -43,9 +47,10 @@ const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose }) => {
           &times;
         </button>
         <p>単語編集</p>
+        <p>{cardDetail.word}</p>
         <button
           className="mt-10 w-40 rounded bg-primary px-4 py-2 text-white"
-          onClick={handleDelete}
+          onClick={handleUpdate}
         >
           保存
         </button>
@@ -56,7 +61,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({ isOpen, onClose }) => {
           戻る
         </button>
       </div>
-    </div >
+    </div>
   );
 };
 
