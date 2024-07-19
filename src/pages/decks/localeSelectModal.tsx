@@ -40,13 +40,11 @@ const LocaleSelectModal: React.FC<LocaleSelectModalProps> = ({ isOpen, onClose, 
   });
 
   const onSubmit: SubmitHandler<FormValues> = (values) => {
-    console.log(values)
-    const localeIds = [...values.localeIds]
+    const localeIds = values.localeIds.join(',')
     Api.get('/locales/getByIds', {
-      params: localeIds
+      params: {localeIds}
     }).then((res) => {
       const newLocales = [...res.data]
-      console.log(newLocales)
       setLocales(newLocales)
     }).catch((e) => {
       console.log(e)
