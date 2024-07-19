@@ -20,10 +20,6 @@ const Dashboard = () => {
   const [loginUser, setLoginUser] = useState(initialUser);
   const router = useRouter();
 
-
-
-
-
   useEffect(() => {
     // ユーザーデータの取得と設定
     const userData = JSON.parse(sessionStorage.getItem('user')) ?? JSON.parse(Cookies.get('user')) ?? initialUser
@@ -36,7 +32,6 @@ const Dashboard = () => {
     // デッキのデータ取得
     Api.get(`/decks/${user.id}`)
       .then((res) => {
-        console.log(res.data)
         setDecks(res.data);
       })
       .catch((error) => {
@@ -44,36 +39,64 @@ const Dashboard = () => {
       });
   }, [router]);
 
-  // const handleDeckEdit = (deckId) => {
-  //   router.push({
-  //     pathname: '/decks/edit',
-  //     query: { deckId }
-  //   })
-  // }
+  const handleDeckEdit = (deck) => {
+    router.push({
+      pathname: '/decks/edit',
+      query: {
+        id: deck.id as number,
+        userId: deck.user_id as number,
+        name: deck.name,
+        isFavorite: deck.is_favorite,
+        isPublic: deck.is_public
+      }
+    })
+  }
 
-
+  const handleCreateDeck = () => {
+    const data = {
+      user_id: loginUser.id,
+    }
+    Api.post(`/decks/store`, data)
+      .then((res) => {
+        console.log('デッキ作成')
+        handleDeckEdit(res.data)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
 
   return (
     <>
       <CustomHead />
       <Header />
       <div className="flex flex-col items-center">
-        <div className='mt-16 grid h-96 w-main grid-cols-3 grid-rows-2 gap-8 p-4'>
-          <div className='col-span-2 grid grid-cols-4 bg-white'>
-            <div className='col-span-2 flex items-center'>
-              {/* <div className='size-20 border border-black'>アイコン</div> */}
-              <p className='ml-20'>{loginUser.name}</p>
+        {/* 以下、仮のコンテンツ */}
+        <div className='mt-16 grid h-40 min-w-96 max-w-main'>
+          <div className='rounded-md bg-white'>
+            <div className='flex h-full items-center justify-center'>
+              <p className='text-3xl'>{loginUser.name} のダッシュボード</p>
             </div>
-            {/* <div className='flex flex-col items-center justify-center'>
+          </div>
+        </div>
+        {/* 以上、仮のコンテンツ */}
+        
+        {/* <div className='mt-16 grid h-96 w-main grid-cols-3 grid-rows-2 gap-8 p-4'>
+          <div className='col-span-2 grid grid-cols-4 rounded-md bg-white'>
+            <div className='col-span-2 flex items-center '>
+              <div className='size-20 border border-black'>アイコン</div>
+              <p className='ml-20 text-3xl'>{loginUser.name}</p>
+            </div>
+            <div className='flex flex-col items-center justify-center'>
               <p>256</p>
               <p>総回答カード数</p>
             </div>
             <div className='flex flex-col items-center justify-center'>
               <p>12</p>
               <p>修了デッキ数</p>
-            </div> */}
+            </div>
           </div>
-          {/* <div className='col-span-1 flex bg-white'>
+          <div className='col-span-1 flex bg-white'>
             <p>連続学習日数</p>
           </div>
           <div className='col-span-2 flex bg-white '>
@@ -81,26 +104,34 @@ const Dashboard = () => {
           </div>
           <div className='col-span-1 flex bg-white '>
             <p>学習カレンダー</p>
-          </div> */}
-        </div>
+          </div>
+        </div> */}
 
         <div className='mb-8 mt-16 w-main border-b-4 border-primary-light px-8 py-4 text-4xl'>デッキ</div>
+        <div className='mb-12 flex w-60 flex-col items-center rounded-md bg-white p-4'>
+          <p className="mb-4">新しいデッキを作る</p>
+          <div>
+            <button className="w-40 rounded-md bg-primary px-4 py-2 text-white"
+              onClick={() => { handleCreateDeck() }}
+            >作成開始</button>
+          </div>
+        </div>
         <div className='mb-40 grid w-main grid-cols-4 p-4'>
           {/* <p>{decks}</p> */}
           {decks.map(deck => (
             <div
-              className='flex h-96 w-60 flex-col items-center justify-between rounded-md bg-white p-4'
+              className='mb-20 flex h-96 w-60 flex-col items-center justify-between rounded-md bg-white p-4'
               key={deck.id}
             >
               <p className='mt-4'>{deck.name}</p>
               <div className='w-full'>
-                {/* <button
+                <button
                   className="mb-4 w-full rounded-md bg-primary-light px-4 py-2"
-                  onClick={() => { handleDeckEdit(deck.id) }}
+                  onClick={() => { handleDeckEdit(deck) }}
                 >
                   編集
                 </button>
-                <button
+                {/* <button
                   className="w-full rounded-md bg-primary px-4 py-2 text-white"
                 >
                   テスト

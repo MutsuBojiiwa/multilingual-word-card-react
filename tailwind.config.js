@@ -21,13 +21,20 @@ module.exports = {
         secondary: '#F2B825',
         error: '#EA4E4E',
       },
-      // height: {
-      //   'header': '4rem',
-      //   'main': 'calc(100vh - 4rem)',
-      // },
+      height: {
+      },
+      maxHeight: {
+      '60%' : '60%'
+      },
       width: {
         'main': '1200px',
-      }
+      },
+      maxWidth: {
+        'main': '1200px',
+      },
+      spacing: {
+        '1/2-minus-80': 'calc(50% - 80px)',
+      },
     },
   },
   plugins: [],
