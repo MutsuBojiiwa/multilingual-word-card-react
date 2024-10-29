@@ -66,6 +66,17 @@ const Dashboard = () => {
       })
   }
 
+  const handleExam = (deckId) => {
+    Api.get(`/exam`, deckId)
+      .then((res) => {
+        console.log('exam')
+        console.log(res.data)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+
   return (
     <>
       <CustomHead />
@@ -131,11 +142,12 @@ const Dashboard = () => {
                 >
                   編集
                 </button>
-                {/* <button
+                <button
                   className="w-full rounded-md bg-primary px-4 py-2 text-white"
+                  onClick={() => { handleExam(deck.id) }}
                 >
                   テスト
-                </button> */}
+                </button>
               </div>
             </div>
           ))}
