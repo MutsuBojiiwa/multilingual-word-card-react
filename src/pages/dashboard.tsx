@@ -66,6 +66,15 @@ const Dashboard = () => {
       })
   }
 
+  const handleExam = (deckId) => {
+    router.push({
+      pathname: '/exam/exam',
+      query: {
+        deckId
+      }
+    })
+  }
+
   return (
     <>
       <CustomHead />
@@ -131,11 +140,12 @@ const Dashboard = () => {
                 >
                   編集
                 </button>
-                {/* <button
+                <button
                   className="w-full rounded-md bg-primary px-4 py-2 text-white"
+                  onClick={() => { handleExam(deck.id) }}
                 >
                   テスト
-                </button> */}
+                </button>
               </div>
             </div>
           ))}
