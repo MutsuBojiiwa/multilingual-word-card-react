@@ -67,14 +67,12 @@ const Dashboard = () => {
   }
 
   const handleExam = (deckId) => {
-    Api.get(`/exam`, deckId)
-      .then((res) => {
-        console.log('exam')
-        console.log(res.data)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
+    router.push({
+      pathname: '/exam/exam',
+      query: {
+        deckId
+      }
+    })
   }
 
   return (
